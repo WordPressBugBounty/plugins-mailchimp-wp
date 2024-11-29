@@ -4,7 +4,7 @@
 
 function fca_eoi_add_powerup_2( $array ) {
 
-	$array[] = array( 'custom_css', 'Custom CSS', 'fca_eoi_checkbox_callback', 'fca_eoi_powerup_settings_section', __( 'Add custom CSS inside the form editor.' ,'easy-opt-ins') );	
+	$array[] = array( 'custom_css', 'Custom CSS', 'fca_eoi_checkbox_callback', 'fca_eoi_powerup_settings_section', 'Add custom CSS inside the form editor.' );	
 	return $array;
 	
 }
@@ -44,7 +44,7 @@ class EoiCustomCssBox {
 		K::textarea( 'fca_eoi[custom_css]'
 			, array(
 				'class' => 'fca_eoi_custom_css_textbox',
-				'placeholder' => __( 'Enter your custom CSS here...' ),
+				'placeholder' => 'Enter your custom CSS here...',
 			)
 			, array(
 				'value' => K::get_var( 'custom_css', $fca_eoi_meta, '' ),

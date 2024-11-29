@@ -46,13 +46,6 @@ class EasyOptInsUpgrade {
             $this->editor_link  = 'https://fatcatapps.com/optincat/upgrade/?utm_campaign=editor%2Bad&utm_source=Optin%2BCat%2BFree%2BMailChimp&utm_medium=plugin';
            	$this->review_link  = 'https://wordpress.org/support/view/plugin-reviews/mailchimp-wp?rate=5#postform';
 			$this->support_link = 'https://wordpress.org/support/plugin/mailchimp-wp';       
-		} elseif ( $this->has_provider('madmimi') ) {
-            $this->submenu_link = 'https://fatcatapps.com/optincat/upgrade/?utm_campaign=wp%2Bsubmenu&utm_source=Optin%2BCat%2BFree%2BPopup&utm_medium=plugin';
-            $this->sidebar_link = 'https://fatcatapps.com/optincat/upgrade/?utm_campaign=sidebar%2Bad&utm_source=Optin%2BCat%2BFree%2BPopup&utm_medium=plugin';
-            $this->editor_link  = 'https://fatcatapps.com/optincat/upgrade/?utm_campaign=editor%2Bad&utm_source=Optin%2BCat%2BFree%2BPopup&utm_medium=plugin';
-			$this->review_link  = 'https://wordpress.org/support/view/plugin-reviews/mad-mimi-wp?rate=5#postform';
-			$this->support_link = 'https://wordpress.org/support/plugin/mad-mimi-wp';       
-                      
 		} else {
             $this->submenu_link = 'https://fatcatapps.com/optincat/upgrade/?utm_campaign=wp%2Bsubmenu&utm_source=Optin%2BCat%2BFree&utm_medium=plugin';
             $this->sidebar_link = 'https://fatcatapps.com/optincat/upgrade/?utm_campaign=sidebar%2Bad&utm_source=Optin%2BCat%2BFree&utm_medium=plugin';
@@ -81,7 +74,7 @@ class EasyOptInsUpgrade {
             return;
         }
         echo '<div class="notice notice-info is-dismissible">';
-		echo	'<p><strong>Quick Links:</strong> <a href="'. $this->support_link .'" target="_blank">Problems?  Get help here</a>. | <a href="'. $this->review_link .'" target="_blank"> Like this plugin?  Please leave a review</a>.</p>';
+		echo	'<p><strong>Quick Links:</strong> <a href="'. esc_url( $this->support_link ) .'" target="_blank">Problems?  Get help here</a>. | <a href="'. esc_url( $this->review_link ) .'" target="_blank"> Like this plugin?  Please leave a review</a>.</p>';
 		echo '</div>';
         
     }
@@ -179,7 +172,7 @@ class EasyOptInsUpgrade {
                         </ul>
 
                         <div class="fca_eoi_centered">
-                            <a href="<?php echo $this->sidebar_link ?>" class="button-primary button-large" target="_blank">
+                            <a href="<?php echo esc_url( $this->sidebar_link ) ?>" class="button-primary button-large" target="_blank">
                                 Upgrade to Premium >
                             </a>
                         </div>
@@ -192,11 +185,11 @@ class EasyOptInsUpgrade {
 
         $template = '<div class="__class__"><a href="' . $this->editor_link . '" target="_blank">__text__ &gt;&gt;</a></div>';
 
-        $script = basename( $_SERVER['SCRIPT_NAME'] );
+        $script = empty( $_SERVER['SCRIPT_NAME'] ) ? '' : basename( sanitize_text_field( $_SERVER['SCRIPT_NAME'] ) );
         if ( $script == 'post.php' || $script == 'post-new.php' ) { ?>
             <script>
                 jQuery(document).ready( function($) {
-                    var layouts_message = <?php echo json_encode( str_replace(
+                    var layouts_message = <?php echo wp_json_encode( str_replace(
                         array( '__class__', '__text__' ),
                         array( 'fca_eoi_upgrade_bar top_border', 'Upgrade to Premium to get more powerful optins (optin bar, slide in, comment checkbox, 2-step optin) and tons of design options.' ),
                         $template
@@ -204,7 +197,7 @@ class EasyOptInsUpgrade {
 
                     $( '.fca_eoi_accordion_tab' ).last().next().after( layouts_message );
 					
-					 layouts_message = <?php echo json_encode( str_replace(
+					 layouts_message = <?php echo wp_json_encode( str_replace(
                         array( '__class__', '__text__' ),
                         array( 'fca_eoi_upgrade_bar', 'Upgrade to Premium for more layouts & design options' ),
                         $template
@@ -212,7 +205,7 @@ class EasyOptInsUpgrade {
 									
                     $( '#fca_eoi_form_preview' ).next().after( layouts_message );
 
-                    $( '#fca_eoi_publish_lightbox_mode_two_step_optin' ).after( <?php echo json_encode( str_replace(
+                    $( '#fca_eoi_publish_lightbox_mode_two_step_optin' ).after( <?php echo wp_json_encode( str_replace(
                         array( '__class__', '__text__' ),
                         array( 'fca_eoi_upgrade_bar fca_eoi_upgrade_bar_inner', 'Want smart optin targeting, exit intervention popups or two-step optins? Upgrade to Premium' ),
                         $template
@@ -221,14 +214,14 @@ class EasyOptInsUpgrade {
 
                     var $power_ups_span = $( '.hndle span:contains("Power Ups")' );
                     if ( $power_ups_span && $power_ups_span.length > 0 ) {
-                        $power_ups_span.parent().next( '.inside' ).append( <?php echo json_encode( '<br/>' . str_replace(
+                        $power_ups_span.parent().next( '.inside' ).append( <?php echo wp_json_encode( '<br/>' . str_replace(
                             array( '__class__', '__text__' ),
                             array( 'fca_eoi_upgrade_bar fca_eoi_upgrade_bar_inner', 'Upgrade to Premium and get access to the Optin Bait Delivery Powerup' ),
                             $template
                         ) ) ?> );
                     }
 					
-					var publication_message = <?php echo json_encode( str_replace(
+					var publication_message = <?php echo wp_json_encode( str_replace(
                         array( '__class__', '__text__' ),
                         array( 'fca_eoi_upgrade_bar fca_eoi_upgrade_bar_inner', 'Get more opt-ins and happier users with our advanced rule builder. Upgrade to Premium >>' ),
                         $template
@@ -251,7 +244,7 @@ class EasyOptInsUpgrade {
 
     function fca_eoi_upgrade_to_premium_menu() {
         
-        $page_hook = add_submenu_page( 'edit.php?post_type=easy-opt-ins', __( 'Upgrade to Premium'), __( 'Upgrade to Premium' ), 'manage_options', 'eoi_premium_upgrade', array( $this, 'fca_eoi_upgrade_to_premium' ));
+        $page_hook = add_submenu_page( 'edit.php?post_type=easy-opt-ins', 'Upgrade to Premium', 'Upgrade to Premium', 'manage_options', 'eoi_premium_upgrade', array( $this, 'fca_eoi_upgrade_to_premium' ));
         add_action( 'load-' . $page_hook , array( $this, 'fca_eoi_upgrade_to_premium_redirect' ));
      }
    

@@ -11,8 +11,8 @@ foreach ( glob( FCA_EOI_PLUGIN_DIR . 'powerups/*', GLOB_ONLYDIR ) as $powerup_pa
 function fca_eoi_register_setting_page() {
 	add_submenu_page(
 		'edit.php?post_type=easy-opt-ins',
-		__('Settings', 'easy-opt-ins'),
-		__('Settings', 'easy-opt-ins'),
+		'Settings',
+		'Settings',
 		'manage_options',
 		'fca_eoi_settings_page',
 		'fca_eoi_settings_page'
@@ -30,12 +30,12 @@ function fca_eoi_register_settings() {
 	
 	if ( $dh_easy_opt_ins_plugin->distro != 'free' ) {
 		
-		add_settings_section( 'fca_eoi_license_settings_section', __('License', 'easy-opt-ins'), false, 'fca_eoi_settings_page' );		
+		add_settings_section( 'fca_eoi_license_settings_section', 'License', false, 'fca_eoi_settings_page' );		
 		
 	}
 
-	add_settings_section( 'fca_eoi_powerup_settings_section', __('Powerups', 'easy-opt-ins'), false, 'fca_eoi_settings_page' );
-	add_settings_section( 'fca_eoi_gdpr_settings_section', __('EU GDPR Compliance', 'easy-opt-ins'), 'fca_eoi_gdpr_settings_heading', 'fca_eoi_settings_page' );
+	add_settings_section( 'fca_eoi_powerup_settings_section', 'Powerups', false, 'fca_eoi_settings_page' );
+	add_settings_section( 'fca_eoi_gdpr_settings_section', 'EU GDPR Compliance', 'fca_eoi_gdpr_settings_heading', 'fca_eoi_settings_page' );
 	
 	$option_fields = apply_filters( 'fca_eoi_setting_filter', array() );
 	
@@ -88,11 +88,11 @@ function fca_eoi_checkbox_callback( $args ) {
 	
 	$html = "<div class='onoffswitch'>";
 		$html .= "<input type='checkbox' class='onoffswitch-checkbox' id='fca_eoi_settings[$option_name]' style='display:none;' name='fca_eoi_settings[$option_name]' value='1' " . checked( 1, $options[ $option_name ], false ) . '/>';
-		$html .= "<label class='onoffswitch-label' for='fca_eoi_settings[$option_name]'><span class='onoffswitch-inner' data-content-on='".__('ON', 'easy-opt-ins')."' data-content-off='".__('OFF', 'easy-opt-ins')."'><span class='onoffswitch-switch'></span></span></label>";
+		$html .= "<label class='onoffswitch-label' for='fca_eoi_settings[$option_name]'><span class='onoffswitch-inner' data-content-on='ON' data-content-off='OFF'><span class='onoffswitch-switch'></span></span></label>";
 	$html .= "</div>";
 	$html .= "<p class='fca_eoi_help_text'>$help_text</p>";
 	   
-	echo $html;
+	echo wp_kses( $html, K::allowed_html() );
 }
 
 function fca_eoi_text_box_callback( $args ) {
@@ -109,7 +109,7 @@ function fca_eoi_text_box_callback( $args ) {
 	
 	if ( !isset ( $options[ $option_name ] ) ) {
 		$value = $options[ $option_name ] = '';
-	}else {
+	} else {
 		$value = esc_textarea( $options[ $option_name ] );
 	}
 
@@ -117,7 +117,7 @@ function fca_eoi_text_box_callback( $args ) {
 	
 	$html .= "<p class='fca_eoi_help_text'>$help_text</p>";
    
-	echo $html;
+	echo wp_kses( $html, K::allowed_html() );
 }
 
 function fca_eoi_wysi_callback( $args ) {
@@ -159,8 +159,8 @@ function fca_eoi_wysi_callback( $args ) {
 		
 		$html .= '<div class="fca-wysiwyg-url-dialog" data-wysihtml5-dialog="createLink" style="display: none">';
 			$html .= '<input data-wysihtml5-dialog-field="href" value="http://">';
-			$html .= '<a class="button button-secondary" data-wysihtml5-dialog-action="cancel">' . __('Cancel', 'quiz-cat') . '</a>';
-			$html .= '<a class="button button-primary" data-wysihtml5-dialog-action="save">' . __('OK', 'quiz-cat') . '</a>';
+			$html .= '<a class="button button-secondary" data-wysihtml5-dialog-action="cancel">Cancel</a>';
+			$html .= '<a class="button button-primary" data-wysihtml5-dialog-action="save">OK</a>';
 		$html .= "</div>";
 		$html .= '<button class="fca-wysiwyg-view-html action" type="button" data-wysihtml5-action="change_view">HTML</button>';
 
@@ -170,8 +170,8 @@ function fca_eoi_wysi_callback( $args ) {
 	if ( $help_text ) {
 		$html .= "<p class='fca_eoi_help_text'>$help_text</p>";
 	}
-   
-	echo $html;
+	
+	echo wp_kses( $html, K::allowed_html() );
 }
 
 function fca_eoi_settings_page(){
@@ -191,10 +191,10 @@ function fca_eoi_settings_page(){
 			do_settings_sections( 'fca_eoi_settings_page' );
 		?>
 		
-		<input type="submit" name="submit" id="submit" class="button button-primary" value="<?php _e('Save', 'easy-opt-ins')?>"  />
+		<input type="submit" name="submit" id="submit" class="button button-primary" value="Save"  />
 	
 	</form>
 	<?php 
-	echo ob_get_clean();
+	echo wp_kses( ob_get_clean(), K::allowed_html() );
 	
 }

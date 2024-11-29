@@ -54,13 +54,13 @@ class EasyOptInsWidget extends WP_Widget {
 		;
 		$widget = $fca_eoi_shortcodes->shortcode_content( array( 'id' => $form_id ) );
 
-		echo $before_widget . $widget . $after_widget;
+		echo wp_kses( $before_widget . $widget . $after_widget, K::allowed_html() );
 	}
 
 	function update( $new_instance, $old_instance ) {
 
 		$instance = $old_instance;
-		$instance[ 'eoi_form_id' ] = strip_tags( $new_instance[ 'eoi_form_id' ] );
+		$instance[ 'eoi_form_id' ] = wp_strip_all_tags( $new_instance[ 'eoi_form_id' ] );
 
 		return $instance;
 	}
@@ -82,7 +82,7 @@ class EasyOptInsWidget extends WP_Widget {
 		if( empty ( $forms ) ) {
 			K::wrap(
 				sprintf( 
-					__( 'You have not created a form yet. <a href="%s" target="_blank">Create a form</a>.' )
+					'You have not created a form yet. <a href="%s" target="_blank">Create a form</a>.'
 					, admin_url( 'post-new.php?post_type=easy-opt-ins' )
 				)
 				, null
@@ -115,7 +115,7 @@ class EasyOptInsWidget extends WP_Widget {
 			
 			$title = $form->post_title
 				? $form->post_title
-				: __( 'Untitled form' ) . ' (#' . $form->ID . ' )'
+				: 'Untitled form' . ' (#' . $form->ID . ' )'
 			;
 			$options[ $form->ID ] = $title;
 		}
@@ -124,7 +124,7 @@ class EasyOptInsWidget extends WP_Widget {
 		if( ! $options ) {
 			K::wrap(
 				sprintf( 
-					__( 'Please make sure to connect <a href="%s" target="_blank">your form</a> to your email marketing provider and to select a thank you page.' )
+					'Please make sure to connect <a href="%s" target="_blank">your form</a> to your email marketing provider and to select a thank you page.'
 					, admin_url( 'edit.php?post_type=easy-opt-ins' )
 				)
 				, null
@@ -147,7 +147,7 @@ class EasyOptInsWidget extends WP_Widget {
 				'options' => $options,
 				'default' => '',
 				'selected' => $instance['eoi_form_id'],
-				'format' => '<p><label for="' . $this->get_field_id( 'eoi_form_id' ) . '">' . __( 'Select form:' ) . '</label><p>:select</p>',
+				'format' => '<p><label for="' . $this->get_field_id( 'eoi_form_id' ) . '">Select form:</label><p>:select</p>',
 			)
 		);
 	}

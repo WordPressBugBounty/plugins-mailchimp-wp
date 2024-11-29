@@ -304,7 +304,7 @@ class RobotDetector {
 	);
 
 	public function is_robot() {
-		$user_agent = $_SERVER['HTTP_USER_AGENT'];
+		$user_agent = empty( $_SERVER['HTTP_USER_AGENT'] ) ? '' : sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) );
 
 		$common_browsers = 'Chrome|Firefox|MSIE|Safari|Opera';
 		if ( preg_match( '/' . $common_browsers . '/i', $user_agent ) ) {

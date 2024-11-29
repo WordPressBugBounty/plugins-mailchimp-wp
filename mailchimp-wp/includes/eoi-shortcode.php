@@ -25,7 +25,7 @@ class EasyOptInsShortcodes {
 		$protocol = is_ssl() ? 'https' : 'http';
 		
 		wp_enqueue_script( 'jquery' );
-		wp_enqueue_style( 'fca-eoi-font-awesome', $protocol . '://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css', array(), FCA_EOI_VER );
+		wp_enqueue_style( 'fca-eoi-font-awesome', FCA_EOI_PLUGIN_URL . '/assets/vendor/font-awesome/font-awesome.min.css', array(), FCA_EOI_VER );
 
 		wp_enqueue_script( 'fca_eoi_tooltipster_js', FCA_EOI_PLUGIN_URL . '/assets/vendor/tooltipster/tooltipster.bundle.min.js', array(), FCA_EOI_VER, true );
 		wp_enqueue_style( 'fca_eoi_tooltipster_css', FCA_EOI_PLUGIN_URL . '/assets/vendor/tooltipster/tooltipster.bundle.min.css', array(), FCA_EOI_VER );

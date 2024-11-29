@@ -4,7 +4,9 @@
 	Plugin URI: https://fatcatapps.com/optincat
 	Description: The Mailchimp Optin Cat WordPress Plugin Makes It Super Simple To Create Beautiful Mailchimp Sign-up Widgets & Forms In Minutes.
 	Author: Fatcat Apps
-	Version: 2.5.6
+	Version: 2.5.8
+	License: GPL v2
+	License URI: https://www.gnu.org/licenses/gpl-2.0.html
 	Author URI: https://fatcatapps.com/
 */
 
@@ -17,7 +19,7 @@ define( 'FCA_EOI_PLUGIN_FILE', __FILE__ );
 define( 'FCA_EOI_PLUGIN_URL', plugins_url( '', __FILE__ ) );
 define( 'FCA_EOI_PLUGIN_SLUG', 'mailchimp-wp' );
 define( 'FCA_EOI_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
-define( 'FCA_EOI_VER', '2.5.6' );
+define( 'FCA_EOI_VER', '2.5.8' );
 
 if( ! defined ( 'FCA_EOI_DEBUG' ) ) {
 	define( 'FCA_EOI_DEBUG', false );
@@ -108,10 +110,10 @@ if ( ! is_plugin_active( plugin_basename( __FILE__ ) ) ) {
 	function fca_eoi_fail_activation( $message ) {
 		wp_die( sprintf(
 			'<h2>%s</h2><p>%s</p><p><a class="button button-large" href="%s">%s</a></p>'
-			, __( 'Ooops!' )
-			, __( $message )
-			, admin_url( 'plugins.php' )
-			, __( 'Go to plugins page' )
+			, 'Ooops!'
+			, esc_html( $message )
+			, esc_url( admin_url( 'plugins.php' ) )
+			, 'Go to plugins page'
 		) );
 	}
 
@@ -145,12 +147,6 @@ if ( ! is_plugin_active( plugin_basename( __FILE__ ) ) ) {
 		//convert options from 'paf' to 'fca_eoi_settings'
 		fca_eoi_convert_option_save();
 		
-		//check for users of custom form, otherwise that feature is disabled
-		$opt = get_option ( 'fca_eoi_allow_customform', '' );
-		if ( empty ( $opt ) ) {
-			fca_eoi_set_custom_form_depreciation();
-		}
-				
 		// If everything went well, continue with the activation setup
 		require FCA_EOI_PLUGIN_DIR . 'includes/eoi-activity.php';
 		EasyOptInsActivity::get_instance()->setup();

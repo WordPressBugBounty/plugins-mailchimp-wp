@@ -10,11 +10,11 @@ function fca_eoi_gutenblock() {
 		'fca_eoi_gutenblock_script',
 		FCA_EOI_PLUGIN_URL . '/assets/admin/block.js',
 		array( 'wp-blocks', 'wp-element', 'wp-editor' ),
-		FCA_EOI_VER
+		FCA_EOI_VER,
+		true
 	);
 	wp_register_style( 'fca-eoi-common-css', FCA_EOI_PLUGIN_URL . '/assets/style-new.min.css', array(), FCA_EOI_VER );
-	wp_register_style ( 'theme-style', get_template_directory_uri().'/style.css' );
-			
+	
 	if ( function_exists( 'register_block_type' ) ) {
 		register_block_type( 'optin-cat/gutenblock',
 			array(
@@ -77,7 +77,7 @@ function fca_eoi_gutenblock_enqueue() {
 		$layout_string = empty( $fca_eoi[ 'layout' ] ) ? '' : $fca_eoi[ 'layout' ];
 		$title = get_the_title( $p );
 		if ( empty( $title ) ) {
-			$title = __("(no title)", 'easy-opt-ins' );
+			$title = "(no title)";
 		}
 		if ( strpos( $layout_string, 'postbox' )  !== false ) {
 			$table_list[] = array(
@@ -105,7 +105,7 @@ function fca_eoi_gutenblock_render( $attributes ) {
 	if ( $id ) {		
 		return do_shortcode( "[easy-opt-in id='$id']" );
 	}
-	return '<p>' . __( 'Click here and select an optin from the block sidebar.', 'easy-opt-ins' ) . '</p>';
+	return '<p>Click here and select an optin from the block sidebar.</p>';
 }
 
 function fca_eoi_gutenblock_twostep_render( $attributes ) {
@@ -117,5 +117,5 @@ function fca_eoi_gutenblock_twostep_render( $attributes ) {
 	if ( $id ) {		
 		return '<p class=fca_eoi_twostep_button>' . $cta_link . '</p>';
 	}
-	return '<p>' . __( 'Click here and select a two-step optin from the block sidebar.', 'easy-opt-ins' ) . '</p>';
+	return '<p>Click here and select a two-step optin from the block sidebar.</p>';
 }

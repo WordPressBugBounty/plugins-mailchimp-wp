@@ -738,7 +738,8 @@ jQuery( document ).ready( function( $ ) {
 	}
 
 	//ACCORDION CLICK HANDLER
-	$( '.accordion-section, .accordion-section-title' ).click(function() {
+	$( '.accordion-section' ).click(function() {
+		accordionSwitch( $( this ) )
 		var $parent = $(this).closest( '[id^="fca_eoi_fieldset_"]' )
 		var field_id = $parent.attr('id')
 
@@ -1085,5 +1086,43 @@ jQuery( document ).ready( function( $ ) {
 		update_layout(fcaEoiLayouts[layout_id], false)
 		$( '#fca_eoi_meta_box_setup' ).hide()
 		$( '#fca_eoi_meta_box_build' ).show()
+	}
+	
+	function accordionSwitch ( el ) {
+		var section = el.closest( '.accordion-section' ),
+			container = section.closest( '.accordion-container' ),
+			siblings = container.find( '.open' ),
+			siblingsToggleControl = siblings.find( '[aria-expanded]' ).first(),
+			content = section.find( '.accordion-section-content' );
+
+		// This section has no content and cannot be expanded.
+		if ( section.hasClass( 'cannot-expand' ) ) {
+			return;
+		}
+
+		// Add a class to the container to let us know something is happening inside.
+		// This helps in cases such as hiding a scrollbar while animations are executing.
+		container.addClass( 'opening' );
+
+		if ( section.hasClass( 'open' ) ) {
+			section.toggleClass( 'open' );
+			content.toggle( true ).slideToggle( 150 );
+		} else {
+			siblingsToggleControl.attr( 'aria-expanded', 'false' );
+			siblings.removeClass( 'open' );
+			siblings.find( '.accordion-section-content' ).show().slideUp( 150 );
+			content.toggle( false ).slideToggle( 150 );
+			section.toggleClass( 'open' );
+		}
+
+		// We have to wait for the animations to finish.
+		setTimeout(function(){
+		    container.removeClass( 'opening' );
+		}, 150);
+
+		// If there's an element with an aria-expanded attribute, assume it's a toggle control and toggle the aria-expanded value.
+		if ( el ) {
+			el.attr( 'aria-expanded', String( el.attr( 'aria-expanded' ) === 'false' ) );
+		}
 	}
 })

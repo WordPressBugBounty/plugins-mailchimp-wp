@@ -27,7 +27,11 @@ function fca_eoi_add_gdpr_options( $array ) {
 add_filter( 'fca_eoi_setting_filter', 'fca_eoi_add_gdpr_options' );
 
 function fca_eoi_is_gdpr_country( $accept_language = '' ) {
-	$accept_language = empty( $accept_language ) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : $accept_language;
+	//CHECK IF THERE IS A SERVER VAR IF ITS EMPTY
+	if ( empty( $accept_language ) && !empty( $_SERVER['HTTP_ACCEPT_LANGUAGE'] ) ) {
+		$accept_language = sanitize_text_field( wp_unslash( $_SERVER['HTTP_ACCEPT_LANGUAGE'] ) );
+	}
+	
 	$gdpr_countries = array(
 		"AT",
 		"BE",
@@ -172,14 +176,14 @@ class EoiSubscribers {
 	}
 	public function register_data_exporter( $exporters ) {
 		$exporters['easy-opt-ins'] = array(
-			'exporter_friendly_name' => __( 'Optin Cat' ),
+			'exporter_friendly_name' => 'Optin Cat',
 			'callback' => __CLASS__ .'::data_exporter',
 		);
 		return $exporters;
 	}
 	public function register_data_eraser( $erasers ) {
 		$erasers['easy-opt-ins'] = array(
-			'eraser_friendly_name' => __( 'Optin Cat' ),
+			'eraser_friendly_name' => 'Optin Cat',
 			'callback' => __CLASS__ .'::data_eraser',
 		);
 		return $erasers;
@@ -192,7 +196,7 @@ class EoiSubscribers {
 		$number = 500; // Limit us to avoid timing out
 		$page = (int) $page;
 		$offset = ( $page - 1 ) * $number;
-		$subscribers = $wpdb->get_results( "SELECT * FROM $table_name WHERE `email` = '$email' LIMIT $number OFFSET $offset" );
+		$subscribers = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE `email` = %s LIMIT %d OFFSET %d", $table_name, $email, $number, $offset ) );
 		$export_items = array();
 		$fields = array(
 			'email',
@@ -241,7 +245,7 @@ class EoiSubscribers {
 		$number = 500; // Limit us to avoid timing out
 		$page = (int) $page;
 		$offset = ( $page - 1 ) * $number;
-		$subscribers = $wpdb->get_results( "SELECT * FROM $table_name WHERE `email` = '$email' LIMIT $number OFFSET $offset" );
+		$subscribers = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE `email` = %s LIMIT %d OFFSET %d", $table_name, $email, $number, $offset ) );
 		$rows_deleted = 0;
 				
 		if ( count( $subscribers ) )  {
@@ -262,8 +266,8 @@ class EoiSubscribers {
 	public function register_subscribers_page() {
 		add_submenu_page(
 			'edit.php?post_type=easy-opt-ins',
-			__('Subscribers', 'easy-opt-ins'),
-			__('Subscribers', 'easy-opt-ins'),
+			'Subscribers',
+			'Subscribers',
 			'manage_options',
 			'fca_eoi_subscribers_page',
 			__CLASS__ .'::fca_eoi_subscribers_page'
@@ -299,10 +303,11 @@ class EoiSubscribers {
 
 		if ( $status === true ) {
 			$status_msg = "added to $provider";
+			if( $provider === "Not set - Store Optins Locally" ) {
+				$status_msg = "added locally";
+			}
 		} else if ( $status ) {
 			$status_msg = "failed to add to $provider [$status]";
-		} else {
-			$status_msg = "added locally";
 		}
 		
 		$wpdb->insert( $this->table_name, array(
@@ -348,9 +353,9 @@ class EoiSubscribers {
 			<p>List of people that opted in since you've updated to Optin Cat 2.2 (released May 2018)</p>
 			<form method='post' id='fca_eoi_subscribers' >
 				<?php wp_nonce_field(); ?>
-				<input size='35' type='text' name='search_text' value='<?php echo $search_text ?>' ></input>
+				<input size='35' type='text' name='search_text' value='<?php echo esc_attr( $search_text ) ?>' ></input>
 				<button class='button button-secondary' name='search' type='submit'>Search subscribers</button>
-				<a href='<?php echo add_query_arg( array( 'fca_eoi_export' => true, '_wpnonce' => wp_create_nonce() ) ) ?>' class='button button-secondary' style='float:right;' download >Download CSV</a>
+				<a href='<?php echo esc_url( add_query_arg( array( 'fca_eoi_export' => true, '_wpnonce' => wp_create_nonce() ) ) ) ?>' class='button button-secondary' style='float:right;' download >Download CSV</a>
 			</form>
 			<br>
 				<table class='wp-list-table widefat fixed striped'>
@@ -379,7 +384,7 @@ class EoiSubscribers {
 							$form_title = 'Comment Optin';
 						}
 						
-						echo "<tr>
+						echo wp_kses( "<tr>
 								<td style='display:none;'>$p->id</td>
 								<td>$p->email</td>
 								<td>$p->name</td>
@@ -389,24 +394,24 @@ class EoiSubscribers {
 								<td>$p->status</td>
 								<td>$p->consent_granted</td>
 								<td>$p->consent_msg</td>
-						</tr>";				
+						</tr>", K::allowed_html() );				
 					} ?>
 				</table>
 				<br>
 			<?php
 			if ( $page ) {
-				$prev_page_link = add_query_arg( 'paged', $page - 1 );
-				echo "<a href='$prev_page_link'>Previous</a>";
+				$prev_page_link = esc_attr( add_query_arg( 'paged', $page - 1 ) );
+				echo wp_kses( "<a href='$prev_page_link'>Previous</a>", K::allowed_html() );
 			}
 			if ( count( $subscribers ) >= $post_limit ) {
-				$next_page_link = add_query_arg( 'paged', $page + 1 );
-				echo "<a style='float:right;' href='$next_page_link'>Next</a>";
+				$next_page_link = esc_attr( add_query_arg( 'paged', $page + 1 ) );
+				echo wp_kses( "<a style='float:right;' href='$next_page_link'>Next</a>", K::allowed_html() );
 			}
 			?>
 		</div>
 		
 		<?php		
-		echo ob_get_clean();
+		echo wp_kses( ob_get_clean(), K::allowed_html() );
 	}
 	
 	public function export_subscribers() {

@@ -25,19 +25,19 @@ class EasyOptInsActivity {
 
 		$this->text = array(
 			'impressions' => array(
-				'total' => __( 'Total Impressions' ),
-				'form'  => __( 'Form Impressions' )
+				'total' => 'Total Impressions',
+				'form'  => 'Form Impressions'
 			),
 			'conversions' => array(
-				'total' => __( 'Total Conversions' ),
-				'form'  => __( 'Form Conversions' )
+				'total' => 'Total Conversions',
+				'form'  => 'Form Conversions'
 			),
 			'conversion_rate' => array(
-				'total' => __( 'Conversion Rate' ),
-				'form'  => __( 'Conversion Rate' ),
+				'total' => 'Conversion Rate',
+				'form'  => 'Conversion Rate',
 			),
-			'period' => __( 'Last %d days' ),
-			'all_time' => __( 'All time' )
+			'period' => 'Last %d days',
+			'all_time' => 'All time'
 		);
 		
 		if ( !defined ( 'FCA_EOI_DISABLE_STATS_TRACKING' )) {
@@ -78,8 +78,8 @@ class EasyOptInsActivity {
 
 	public function track_activity() {
 		
-		$nonce = sanitize_text_field( $_REQUEST['nonce'] );
-		$form_id = intval( $_REQUEST['form_id'] );
+		$nonce = empty( $_REQUEST['nonce'] ) ? '' : sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) );
+		$form_id = empty( $_REQUEST['form_id'] ) ? '' : intval( $_REQUEST['form_id'] );
 
 		$nonceVerified = ( wp_verify_nonce( $nonce, 'fca_eoi_activity') OR wp_verify_nonce( $nonce, 'fca_eoi_submit_form') );
 		$idVerified = is_int( $form_id ) && $form_id > 0;
@@ -124,7 +124,7 @@ class EasyOptInsActivity {
 			$now = time();
 			for ( $i = $day_interval - 1; $i >= 0; $i -- ) {
 				$time   = $now - ( 86400 * $i );
-				$day    = date( 'Y-m-d', $time );
+				$day    = gmdate( 'Y-m-d', $time );
 				$days[] = $day;
 
 				$stats['impressions'][ $day ] = 0;
@@ -237,15 +237,20 @@ class EasyOptInsActivity {
 
 	private function get_stats_query( $field, $activity_type, $day_interval ) {
 		global $wpdb;
-
+		
+		if( $day_interval ) {
+			return $wpdb->prepare(
+			"SELECT %i, COUNT(*) AS `total` " .
+			"FROM %i " .
+			"WHERE `type` = %s " .
+				"AND `timestamp` >= DATE_SUB(NOW(), INTERVAL %d DAY) " .
+			"GROUP BY %i", $field, $this->table_name, $activity_type, $day_interval, $field );
+		}
+		
 		return $wpdb->prepare(
-			"SELECT `$field`, COUNT(*) AS `total` " .
-			"FROM `$this->table_name` " .
-			"WHERE " .
-				"`type` = %s " .
-				( $day_interval
-					? "AND `timestamp` >= DATE_SUB(NOW(), INTERVAL $day_interval DAY) "
-					: "") .
-			"GROUP BY `$field`", $activity_type );
+			"SELECT %i, COUNT(*) AS `total` " .
+			"FROM %i " .
+			"WHERE `type` = %s " .
+			"GROUP BY %i", $field, $this->table_name, $activity_type, $field );
 	}
 }

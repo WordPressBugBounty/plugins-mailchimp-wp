@@ -4,7 +4,6 @@ jQuery(document).ready(function($){
 		'aweber-wp/aweber-wp.php',
 		'campaign-monitor-wp/campaign-monitor-wp.php',
 		'mailchimp-wp/mailchimp-wp.php',
-		'mad-mimi-wp/mad-mimi-wp.php',
 		'getresponse-wp/getresponse-wp.php',
 	]
 	

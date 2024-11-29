@@ -1,0 +1,338 @@
+=== Optin Cat Premium ===
+Contributors: fatcatapps, davidhme, ryannovotny
+Author URI: http://fatcatapps.com/
+Plugin URI: http://fatcatapps.com/
+Requires at least: 3.9.1
+Tested up to: 6.7
+Stable tag: 2.5.8
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+
+Optin Cat Helps You Convert More Blog Visitors Into Subscribers. Create Popups, Widgets & Post Boxes In Less Than 2 Minutes.
+
+== Changelog ==
+
+= 2.5.8 - November 28, 2024 =
+* Fix editor accordion not working
+* Fix translation warning
+* Fix checkbox CSS on powerups page
+* Fix potential XSS vectors reported.
+* Fix HTTP_ACCEPT_LANGUAGE error logged in some configurations
+* Removed support for Mad Mimi ( Service is shutdown )
+* Tested up to WordPress 6.7.
+
+= 2.5.7 - October 5, 2023 =
+* Fix Local optin option generating error
+
+= 2.5.6 - September 24, 2023 =
+* Fix reported security vulnerability with admin dismissal notice
+
+= 2.5.5 - September 5, 2023 =
+* Fixed/added PHP 8.2 Compatibility
+* Updated Icon
+* Fixed Gutenberg block
+* Fixed HTML escaping in admin (potential XSS vulnerability)
+* Tested up to WordPress 6.3
+
+= 2.5.4 - July 20, 2021 =
+* Fixed error message in Publication metabox
+* Fixed issue where banners keep showing back up after closing them
+* Fixed Gutenberg style issue
+* Tested up to WordPress 5.8
+
+= 2.5.3 - February 23, 2021 =
+* Updated feedback form in Optin Cat Free
+* Tested up to WordPress 5.6.2
+
+= 2.5.2 - January 15, 2021 =
+* Updated display name for Optin Cat Free
+* Tested up to WordPress 5.6
+
+= 2.5.1 - August 11, 2020 =
+* Tested up to WordPress 5.5.0
+
+= 2.5.0 - July 9, 2020 =
+* Add color pickers for “Thank you” message
+* Add color picker for bottom half of forms for relevant layouts
+* Add Gutenberg block for two-step optins
+* Allow form navigation with Tab key
+* Allow ActiveCampaign existing users to be updated
+* Allow optin forms to work without email provider (store locally)
+* Replace 3rd party Codemirror for builtin one
+* Replace TinyMCE for simple text editor
+* Fix preview form live updates
+* Fix missing color picker labels
+* Fix alignment issue with TwentyTwenty theme
+* Fix optin bar display issue in IE
+* Tested up to WordPress 5.4.2
+
+= 2.4.1 - July 23, 2019 =
+* Fix/optimize table creation
+* Tested up to WordPress 5.2.2
+
+= 2.4.0 - March 6, 2019 =
+* Added Honeypot powerup feature ( prevent bot spam measure )
+* Fix MailChimp single optin setting not working
+* Remove unused onboarding code
+* Tested up to WordPress 5.1.0
+
+= 2.3.0 - December 10, 2018 =
+* Add WordPress 5.0 block (Gutenberg) support
+* Allow resubscribing to MailChimp (e.g. add interest groups to existing customer)
+* Update to use GetResponse API v3
+
+= 2.2.2 - September 24, 2018 =
+* Fix slide-in headline toggle
+* Fix potential error on activation
+* Fix potential authorization issue with Aweber credentials 
+
+= 2.2.1 - June 26, 2018 =
+* Right-align images on 'Image' and 'Content Upgrade - Image' layouts
+* Fix name field not being sent if GDPR checkbox enabled
+* Fix GDPR checkbox not showing if description field is disabled
+* Fix GetResponse already subscribed email returning an error
+
+= 2.2.0 - May 23, 2018 =
+* Added Subscribers table
+* Added GDPR compliance checkbox
+* Integrated with WordPress' GDPR data export and erasure features
+
+= 2.1.0 - November 7, 2017 =
+* Added support for ConvertKit ( https://convertkit.com )
+* Added 20+ new layout options 
+* Added image based layouts
+* Added descriptive names for each layout
+* Added HTML support for Optin Bait emails
+* Improved HTML formatting & bullets
+* Improved editor screenshots and styling 
+* Improved default color palette for color pickers
+* Improved error messages
+* Changed menu position from 105 to 106 to fix conflict
+* Updated featherlight library to 1.7.9
+* Fix two-step optin impressions not being counted
+* Misc bug fixes
+
+= 2.0.5 - July 18, 2017 =
+* Update software licensing library
+
+= 2.0.4 - June 13, 2017 =
+* Tested up to WordPress 4.8
+
+= 2.0.3 - May 29, 2017 =
+* Check if user is already subscribed to MailChimp before optin
+
+= 2.0.2 - March 3, 2017 =
+* Fix optin form JavaScript sometimes not being enqueued on post boxes
+* Update Campaign Monitor API to v5.0.2 - adds PHP7 compatibility
+* Fix redirect mode success cookies not being set
+
+= 2.0.1 - February 15, 2017 =
+* Added Drip timezone
+* Fix Drip name not added when using Drip tag event
+* Fix Drip conflict with WooCommerce-Drip plugin
+
+= 2.0.0 - January 16, 2017 =
+* Added new layout type 'Optin Bar' with 3 new layouts
+* Added Success Cookie feature - stop showing optins to users that have already opted in
+* Rewrote targetting feature for improved compatibility
+* Fixed name and email field responsive scaling
+* Minified all CSS and JS files to improve performance
+
+= 1.8.1 - December 7, 2016 =
+* Fix popup rule backward compatibility issue where some settings would not save (Device & Go Live toggle)
+* Fix some text inputs having escape slashes around quotation marks
+* Changed delete rule button to always show
+* Changed add rule button to hide when all rules have been added
+* Removed 'Never' as a display frequency option - replaced with Go Live toggle
+
+= 1.8.0 - November 29, 2016 =
+* Added setting to target popups based on device (desktop and/or mobile)
+* Added ActiveCampaign API integration
+* Added button hover color picker
+* Added width picker for Form, Button, Name, and Email fields
+* Added placeholder colors based on font colors for email and name
+* Added show/hide toggle to Headline, Description, Privacy Policy sections
+* Improved visual editor behavior and design
+* Improved UI of popup targetting rule builder
+* Changed Privacy Policy area to "After Button Area"
+* Changed AJAX thank you message to remain instead of fade after 5 seconds
+* Changed subscribing animation to simple text
+* Changed various texts in UI
+* Fix rare case of 'one a month' and 'only once' display cookie date possibly being invalid
+
+= 1.7.2 - October 3, 2016 =
+* Fix "Class 'K' not found" error some users reported on activation
+
+= 1.7.1 - September 29, 2016 =
+* Fix license key and Power Up settings potentially getting reset on activation
+* Fix Drip Tag and Event not saving on Comment Optin powerup
+
+= 1.7.0 - September 26, 2016 =
+* Added support for Aweber tagging
+* Added Comment Opt-in Power Up
+* Added support for Mad Mimi ( https://madmimi.com )
+* Added support for Zapier ( https://zapier.com )
+* Merged Power Ups and Licensing page in to one with improved UI
+* Updated Layout 9 to look better with long titles
+* UI updates
+* Up to 15% improved performance
+
+= 1.6.3 - August 31, 2016 =
+* Update Tooltipster library to latest version for better compatibility
+* Change API inputs to activate on any input (e.g. paste)
+* Fix editor not working on Safari
+* Fix metaboxes potentially being hidden by WordPress
+* Fix Aweber list resetting selection on load
+
+= 1.6.2 - August 3, 2016 =
+* Fix the wrong GetResponse list/campaign being displayed after save 
+
+= 1.6.1 - July 23, 2016 =
+* Fix button hover color being white on new forms 
+* Fix potential PHP issue 'Can't use function return value'
+
+= 1.6.0 - July 18, 2016 =
+* Performance improvements of up to 50%
+* UI Updates
+* Fix inconsistent loading of previous settings (API keys/mailing lists) when creating a new form
+* Added support for MailChimp interest groups
+* Change 2-step call to action link to be a button instead of a hyperlink
+* Fix Drip actions not sending name property
+* Fix Aweber list selection sometimes not displaying the saved list
+* Fix Aweber giving a failure message when user is already subscribed
+* Revert sending 'unnamed user' as user name if empty
+
+= 1.5.8 - June 14, 2016 =
+* Add auto-focus on popup
+* Add custom name field for Drip (filterable)
+* Change 'Name' placeholders to 'First Name'
+* Fix Aweber requiring authorization on each form (will use the last authorization entered)
+* Fix MailChimp 10 lists maximum
+* Fix custom css box sometimes hidden for personal plan
+* Fix a FireFox popup display issue  
+
+= 1.5.7 - May 6, 2016 =
+* Fix an issue with some icons being removed/hidden
+* Fix potential MailChimp issue with empty user names
+* Fix for potential encoding type being changed by theme
+
+= 1.5.6 - May 2, 2016 =
+* Fix an issue with saving forms a small number users reported
+* Fix an issue with umlauts in ajax message
+
+= 1.5.5 - April 19, 2016=
+* Each form can now be connected to a unique account (API key)
+* Performance improvements: All CSS is pre-compiled, Removed several deprecated .css files
+* Upgraded to use MailChimp API 3.0
+* Fixed a form saving issue that affected some PHP/WordPress installations
+* Fixed PHP warnings related to remove_meta_box()
+* Fixed a bug Drip integration 'actions'
+
+= 1.5.4 - March 17, 2016 =
+* Performance improvements: optin forms (particularily widgets) now load much faster
+
+= 1.5.3 - February 29, 2016 =
+* Bugfix: Optin Cat now works with multiple MailChimp accounts
+* Bugfix: MailChimp single optin feature was broken (did double optin instead) 
+
+= 1.5.2 - February 24, 2016 =
+* Added spinning animation after form submission 
+* Changed ajax error message (inside of button) into something more humanly readable
+* Numerous bug fixes
+
+= 1.5.1 - February 20, 2016 =
+* Fixed a JS bug introduced with 1.5.0
+
+= 1.5.0 - February 20, 2016 =
+* Added AJAX Thank You - feature
+* Added 4 new optin form layouts
+* Improved performance of Optin Cat form editor in the WP backend (it now loads faster)
+* Impression tracking can now be disabled
+* Small UI improvements to Optin Cat form editor
+* Numerous bug fixes
+
+= 1.4.1 =
+* Bugfix: Popup display setting "Display only on home page" didn't work on some themes if the home page was the "All posts" page.
+* Bugfix: Fixed a conflict with the Beaver Builder plugin
+* Improvement: 2 Step Optins now work anywhere, not just inside of posts & pages
+* Various other small bugfixes & improvements
+
+= 1.4.0 =
+* Added: Animation Effects Power Up. (Optin Cat Elite Only)
+* Changed: Updated layout selection screen to be responsive and look more like Wordpress theme select screen.
+* Changed: Renamed Content Upgrade / Optin Bait to Optin Bait Delivery
+* Fixed: Hide Optin Cat shortcode insert button and dashboard widget from users with privileges below editor (subscriber and author).
+* Fixed: Logged in users no longer count towards impressions on forms.
+
+= 1.3.9 =
+* Fixed: A bug in our popup targeting engine caused our popup's assets (css, js, html) to be loaded on all pages of your site instead of only the pages on which it was supposed to be displayed.
+* Fixed: A bug in our popup targeting engine caused the "display once per month" criteria to not work as expected in some cases, which kinda defeated the purpose of our fancy targeting engine.
+* Fixed: Optin Cat caused a site's W3 HTML validation to fail due to the placement of the <style>-tag. This wasn't a big problem (all browsers always rendered Optin Cat properly), but not ideal.
+* Fixed: Some users had issues activating their licenses / receiving automatic updates.
+* Fixed: In some cases when there was another plugin that used the Aweber API active, things didn't quite worked as planned.
+* Fixed: There were some issues with the GetResponse API that prevented leads being added to the mailing list in certain form configurations.
+
+= 1.3.8 =
+* Fixed an issue related to bots causing fake conversion data.
+
+= 1.3.7 =
+* Added "HTML Form" provider - Optin Cat now works with almost any email marketing provider on the market.
+* Tiny fix: Ignore shortcode if the global $post is empty
+
+= 1.3.6 =
+* Fixed a bug in the Popup targeting engine introduced in Optin Cat 1.3.5.
+
+= 1.3.5 =
+* Improved Popup targeting engine: changed how a session is counted (a session now expires after 30 minutes of inactivity).
+* Fixed a bug with the auto-update mechanism.
+
+= 1.3.4 =
+* Improved Popup targeting engine for better performance.
+* Improved Post Box targeting: only one box can be displayed at the bottom of the post at any given time going forward. The most exactly targeted post box will be given priority (eg. Individual Post > Category > All Posts)
+
+= 1.3.3 =
+* Performance improvements
+* Fixed a plugin conflict with another Campaign Monitor plugin 
+* Minor Bugfixes
+
+= 1.3.2 =
+* Fixed a bug that caused display issues on some sites after unchecking the "New CSS" powerup
+
+= 1.3.1 =
+* Fixed a bug that caused some conversions to be tracked more than once
+* Various other bugfixes
+
+= 1.3 =
+* Added Analytics feature
+* Added Drip Integration
+* Added GetResponse Integration
+* Added Exit Intervention Feature
+* Added tinyMCE button to WP Post editor
+* Improved Optin Editor UI
+* Various minor bugfixes
+* Added the ability to customize error text
+* Added Optin Bait feature
+* Added mobile popup support - Optin Cat now works on all devices.
+
+= 1.2.2 =
+* Bugfix: "Quick edit" disappears on pages
+* Improved performance / loadspeed of popup feature
+* Improved performance of WP backend
+
+= 1.2 =
+* Renamed plugin to Optin Cat
+* Added Popup Feature
+* Numerous Bugfixes
+* Numerous User Interface Improvements
+
+= 1.1.4 =
+
+* Bugfixes, UI improvements
+
+= 1.1 =
+
+* Initial Release
+
+= Version 1.0 =
+
+* Beta Release

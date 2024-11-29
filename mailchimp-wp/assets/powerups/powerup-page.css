@@ -57,7 +57,7 @@ legend {
 	-ms-user-select: none;
 }
 .onoffswitch-checkbox {
-    display: none;
+    display: none !important;
 }
 .onoffswitch-label {
     display: block;

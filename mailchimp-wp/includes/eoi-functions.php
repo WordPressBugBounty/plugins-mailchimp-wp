@@ -36,36 +36,6 @@ function fca_eoi_get_thanks_mode($post_meta) {
 	return $mode;
 }
 
-
-//CHECK IF USER HAS AN ACTIVE CUSTOM FORM IN ONE OF THEIR OPT INS, OTHERWISE TURN OFF THIS FEATURE
-function fca_eoi_set_custom_form_depreciation() {
-	
-	$optins_using_customform = get_posts( array(
-		'post_type' => 'easy-opt-ins',
-		'posts_per_page' => -1,
-		'post_status' => 'any',
-		'meta_key'		=> 'fca_eoi_provider',
-		'meta_value'	=> 'customform',
-		
-	));
-	
-	$forms_in_trash = get_posts( array(
-		'post_type' => 'easy-opt-ins',
-		'posts_per_page' => -1,
-		'post_status' => 'trash',
-		'meta_key'		=> 'fca_eoi_provider',
-		'meta_value'	=> 'customform',
-		
-	)); 
-	
-	if ( count ( $optins_using_customform ) > 0 OR count ( $forms_in_trash ) > 0) {
-		update_option ( 'fca_eoi_allow_customform', 'true' );
-	} else {
-		update_option ( 'fca_eoi_allow_customform', 'false' );
-	}
-	
-}
-
 function fca_eoi_get_html( $form_id, $fca_eoi_meta ) {
 	
 	$selected_layout = $fca_eoi_meta[ 'layout' ];
@@ -88,24 +58,24 @@ function fca_eoi_get_html( $form_id, $fca_eoi_meta ) {
 	
 	//determine if ajax or thank you page redirect
 	$thanks_mode = fca_eoi_get_thanks_mode($fca_eoi_meta);
-	$thank_you_text_color = empty ( $fca_eoi_meta[ 'thank_you_text_color' ] ) ? '#fff' : $fca_eoi_meta[ 'thank_you_text_color' ];
-	$thank_you_bg_color = empty ( $fca_eoi_meta[ 'thank_you_bg_color' ] ) ? '#00b894' : $fca_eoi_meta[ 'thank_you_bg_color' ];
-	$email_error_text_color = empty ( $fca_eoi_meta[ 'email_error_text_color' ] ) ? '#fff' : $fca_eoi_meta[ 'email_error_text_color' ];
-	$email_error_bg_color = empty ( $fca_eoi_meta[ 'email_error_bg_color' ] ) ? '#d63031' : $fca_eoi_meta[ 'email_error_bg_color' ];
+	$thank_you_text_color = esc_attr( empty ( $fca_eoi_meta[ 'thank_you_text_color' ] ) ? '#fff' : $fca_eoi_meta[ 'thank_you_text_color' ] );
+	$thank_you_bg_color = esc_attr( empty ( $fca_eoi_meta[ 'thank_you_bg_color' ] ) ? '#00b894' : $fca_eoi_meta[ 'thank_you_bg_color' ] );
+	$email_error_text_color = esc_attr( empty ( $fca_eoi_meta[ 'email_error_text_color' ] ) ? '#fff' : $fca_eoi_meta[ 'email_error_text_color' ] );
+	$email_error_bg_color = esc_attr( empty ( $fca_eoi_meta[ 'email_error_bg_color' ] ) ? '#d63031' : $fca_eoi_meta[ 'email_error_bg_color' ] );
 	if ( $thanks_mode === 'redirect' ) {
 		$mode = empty ( $fca_eoi_meta[ 'redirect_page_mode' ] ) ? 'page' : $fca_eoi_meta[ 'redirect_page_mode' ];
 		$home_url = get_site_url();
 		if ( $mode === 'page' ) {
-			$thanks_page =	get_permalink( K::get_var( 'thank_you_page', $fca_eoi_meta, $home_url ) );
+			$thanks_page = get_permalink( K::get_var( 'thank_you_page', $fca_eoi_meta, $home_url ) );
 		} else {
-			$thanks_page =	empty ( $fca_eoi_meta[ 'thank_you_url' ] ) ? $home_url : $fca_eoi_meta[ 'thank_you_url' ];
+			$thanks_page = empty ( $fca_eoi_meta[ 'thank_you_url' ] ) ? $home_url : $fca_eoi_meta[ 'thank_you_url' ];
 		}
 		
 	} else {
-		$thanks_page =	htmlentities ( K::get_var( 'thankyou_ajax', $fca_eoi_meta, 'Thank you! Please check your inbox for your confirmation email.' ), ENT_QUOTES, "UTF-8");
+		$thanks_page = esc_attr( htmlentities ( K::get_var( 'thankyou_ajax', $fca_eoi_meta, 'Thank you! Please check your inbox for your confirmation email.' ), ENT_QUOTES, "UTF-8") );
 	}
 	
-	$sub_msg = htmlentities ( K::get_var( 'subscribing_message', $fca_eoi_meta, 'Subscribing...' ), ENT_QUOTES, "UTF-8");
+	$sub_msg = esc_attr( htmlentities ( K::get_var( 'subscribing_message', $fca_eoi_meta, 'Subscribing...' ), ENT_QUOTES, "UTF-8") );
 	
 	$cookie_dur = K::get_var( 'success_duration', $fca_eoi_meta['publish_lightbox'], 0 );
 	

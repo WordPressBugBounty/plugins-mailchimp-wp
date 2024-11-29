@@ -24,6 +24,138 @@ class K {
 	}
 
 	/**
+	 * Gets a variable 
+	 */
+	static function allowed_html() {
+		return [
+			'a' => [
+				'href' => true,
+				'title' => true,
+				'target' => true,
+				'class' => true,
+				'download' => true,
+				'id' => true,
+			],
+			'img' => [
+				'src' => true,
+				'id' => true,
+				'class' => true,
+			],
+			'h1' => [
+				'id' => true,
+				'class' => true,
+			],
+			'h2' => [
+				'id' => true,
+				'class' => true,
+			],
+			'h3' => [
+				'id' => true,
+				'class' => true,
+			],
+			'button' => [
+				'type' => true,
+				'title' => true,
+				'data-wysihtml5-command' => true,
+				'class' => true,
+				'id' => true,
+				'name' => true,
+			],
+			'option' => [
+				'selected' => true,
+				'id' => true,
+				'class' => true,
+				'value' => true
+			],
+			'optgroup' => [
+				'label' => true,
+			],
+			'input' => [
+				'name' => true,
+				'id' => true,
+				'class' => true,
+				'value' => true,
+				'type' => true,
+				'checked' => true,
+				'hidden' => true,
+				'readonly' => true,
+				'size' => true,
+				'min' => true,
+				'max' => true,
+				'style' => true,
+			],
+			'select' => [
+				'name' => true,
+				'id' => true,
+				'class' => true,
+				'value' => true,
+				'style' => true,
+			],
+			'textarea' => [
+				'name' => true,
+				'id' => true,
+				'class' => true,
+				'value' => true
+			],
+			'table' => [
+				'id' => true,
+				'class' => true,
+			],
+			'tr' => [
+				'id' => true,
+				'class' => true,
+			],
+			'th' => [
+				'id' => true,
+				'class' => true,			
+				'title' => true,
+			],
+			'td' => [
+				'id' => true,
+				'class' => true,			
+				'title' => true,
+			],
+			'form' => [
+				'name' => true,
+				'id' => true,
+				'class' => true,
+				'action' => true,
+				'method' => true
+			],
+			'label' => [
+				'for' => true,
+				'id' => true,
+				'class' => true,
+			],
+			'p' => [
+				'id' => true,
+				'class' => true,
+			],
+			'div' => [
+				'id' => true,
+				'class' => true,
+				'data-layout-id' => true,
+				'data-layout-type' => true,
+				'data-layout-order' => true,
+			],
+			'span' => [
+				'id' => true,
+				'class' => true,
+				'title' => true,
+				'data-on' => true,
+				'data-off' => true
+			],
+			'fieldset' => [
+				'id' => true,
+			],
+			'legend' => true,
+			'br' => true,
+			'style' => true,
+			
+		];
+	}
+
+	/**
 	 * Prints or returns an input field
 	 */
 	static function input( $name ) {
@@ -83,7 +215,7 @@ class K {
 		if( ! empty( $args[ 'return' ] ) ) {
 			return $input;
 		} else {
-			echo $input;
+			echo wp_kses( $input, K::allowed_html() );
 		}
 	}
 
@@ -165,16 +297,16 @@ class K {
 				
 				$html .= '<div class="fca-wysiwyg-url-dialog" data-wysihtml5-dialog="createLink" style="display: none">';
 					$html .= '<input data-wysihtml5-dialog-field="href" value="http://">';
-					$html .= '<a class="button button-secondary" data-wysihtml5-dialog-action="cancel">' . __('Cancel', 'fca-eoi') . '</a>';
-					$html .= '<a class="button button-primary" data-wysihtml5-dialog-action="save">' . __('OK', 'fca-eoi') . '</a>';
+					$html .= '<a class="button button-secondary" data-wysihtml5-dialog-action="cancel">Cancel</a>';
+					$html .= '<a class="button button-primary" data-wysihtml5-dialog-action="save">OK</a>';
 				$html .= "</div>";
 
 				$html .= '<button class="fca-wysiwyg-view-html action" type="button" data-wysihtml5-action="change_view">HTML</button>';
 		
 			$html .= "</div>";
 			$html .= "<textarea class='fca-wysiwyg-html fca-eoi-input-wysi $name' name='$name' placeholder='$placeholder'>$value</textarea>";
-			echo $html;
-
+			
+			echo wp_kses( $html, K::allowed_html() );
 			$textarea = ob_get_clean();
 			$textarea = sprintf( '<div %s>%s</div>', K::params_str( $params_for_editor ), $textarea );
 		} else {
@@ -194,7 +326,7 @@ class K {
 		if( ! empty( $args[ 'return' ] ) ) {
 			return $textarea;
 		} else {
-			echo $textarea;
+			echo wp_kses( $textarea, K::allowed_html() );
 		}
 	}
 
@@ -286,7 +418,7 @@ class K {
 		if( ! empty( $args[ 'return' ] ) ) {
 			return $select;
 		} else {
-			echo $select;
+			echo wp_kses( $select, K::allowed_html() );			
 		}
 	}
 
@@ -352,7 +484,7 @@ class K {
 		if( ! empty ( $args[ 'return' ] ) ) {
 			return $HTML;
 		} else {
-			echo $HTML;
+			echo wp_kses( $HTML, K::allowed_html() );
 		}
 	}
 
@@ -396,7 +528,7 @@ class K {
 		if( ! empty( $args[ 'return' ] ) ) {
 			return $html;
 		} else {
-			echo $html;
+			echo wp_kses( $html, K::allowed_html() );			
 		}
 	}
 
@@ -480,7 +612,7 @@ function k_scripts() {
 }
 
 function k_selector( $name, $selected_options = array(), $return = false ) {
-
+	
 	global $post;
 	// Dirty fix to restore the global $post
 	$post_bak = $post;
@@ -492,15 +624,23 @@ function k_selector( $name, $selected_options = array(), $return = false ) {
 	$ret = ob_start();
 
 	// Start ouput
-	echo '<select data-placeholder="' . __( 'Type to search for posts, categories or pages.' ) . '" name = "' . $name . '[]" class="select2" multiple="multiple" style="width: 100%;">';
+	echo '<select data-placeholder="Type to search for posts, categories or pages." name="' . esc_attr( $name ) . '[]" class="select2" multiple="multiple" style="width: 100%;">';
 
 	// Front page
-	K::wrap( __( 'Front page' )
-		, array(
+	K::wrap( 'None',
+		array(
+			'value' => '',
+			'selected' => in_array( '', $selected_options ),
+		),
+		array( 'in' => 'option' )
+	);
+	
+	K::wrap( 'Front page',
+		array(
 			'value' => '~',
 			'selected' => in_array( '~', $selected_options ),
-		)
-		, array( 'in' => 'option' )
+		),
+		array( 'in' => 'option' )
 	);
 
 	foreach ($post_types as $post_type => $post_type_args ) {
@@ -532,9 +672,9 @@ function k_selector( $name, $selected_options = array(), $return = false ) {
 			while ( $the_query->have_posts() ) {
 				$the_query->the_post();
 				$options[ 'posts' ][ '#' . get_the_ID() ] = $post_type_name
-					. ' ' . __( '›' ) . ' '
+					. ' › '
 					. '#' . get_the_ID() . ' &ndash; '
-					. ( get_the_title() ? get_the_title() : __('[Untitled]') )
+					. ( get_the_title() ? get_the_title() : '[Untitled]' )
 				;
 			}
 		}
@@ -543,12 +683,12 @@ function k_selector( $name, $selected_options = array(), $return = false ) {
 		$post = $post_bak;
 
 		// Posts > All
-		echo '<optgroup label="' . $post_type_name . '">';
+		echo '<optgroup label="' . esc_attr( $post_type_name ) . '">';
 		printf(
 			'<option value="%s" %s >%s</option>'
-			, $post_type
+			, esc_attr( $post_type )
 			, ( in_array( $post_type, $selected_options ) ? 'selected' : '' )
-			, $post_type_name . ' ' . ( '›' ) . ' ' . __( 'All' )
+			, esc_html( $post_type_name ) . ' › All'
 		);
 		echo '</optgroup>';
 
@@ -556,11 +696,11 @@ function k_selector( $name, $selected_options = array(), $return = false ) {
 		if ( ! empty( $options[ 'taxonomies' ] ) ) {
 			printf(
 				'<optgroup label="%s">'
-				, $post_type_name . ' ' . __( '›' ) . ' ' . __( 'Taxonomies' )
+				, esc_attr( $post_type_name ) . ' › Taxonomies'
 			);
 			foreach ( $options[ 'taxonomies' ] as $k => $v ) {
 				$selected = ( in_array( $k, $selected_options ) ) ? 'selected="selected"' : '';
-				printf( '<option value="%s" %s >%s</option>', $k, $selected, $v );
+				printf( '<option value="%s" %s >%s</option>', esc_attr( $k ), esc_attr( $selected ), esc_html( $v ) );
 			}
 			echo '</optgroup>';
 		}
@@ -568,14 +708,14 @@ function k_selector( $name, $selected_options = array(), $return = false ) {
 		// Posts > content
 		if ( ! empty( $options[ 'posts' ] ) ) {
 			printf( '<optgroup label="%s">'
-				, $post_type_name . ' ' . __( '›' ) . ' ' . __( 'Content' )
+				, esc_attr( $post_type_name ) . ' › Content'
 			);
 			foreach ( $options[ 'posts' ] as $k => $v ) {
 				$selected = ( in_array( $k, $selected_options ) ) ? 'selected="selected"' : '';
 				printf( '<option value="%s" %s >%s</option>'
-					, $k
-					, $selected
-					, $v
+					, esc_attr( $k )
+					, esc_attr( $selected )
+					, esc_html( $v )
 				);
 			}
 			echo '</optgroup>';
@@ -588,6 +728,6 @@ function k_selector( $name, $selected_options = array(), $return = false ) {
 	if ( $return ) {
 		return $ret;
 	} else {
-		echo $ret;
+		echo wp_kses( $ret, K::allowed_html() );
 	}
 }

@@ -84,8 +84,8 @@ function mailchimp_get_groups( $api_key, $list_id ) {
 
 function mailchimp_get_groups_ajax() {
 	
-	$api_key = empty( $_REQUEST['api_key'] ) ? '' : $_REQUEST['api_key'];
-	$list_id = empty( $_REQUEST['list_id'] ) ? '' : $_REQUEST['list_id'];
+	$api_key = empty( $_REQUEST['api_key'] ) ? '' : sanitize_text_field( wp_unslash( $_REQUEST['api_key'] ) );
+	$list_id = empty( $_REQUEST['list_id'] ) ? '' : sanitize_text_field( wp_unslash( $_REQUEST['list_id'] ) );
  
 	$groups_formatted = array();
 
@@ -105,7 +105,7 @@ function mailchimp_get_groups_ajax() {
 		$url = 'https://' . $delivery_center . '.api.mailchimp.com/3.0/lists/' . $list_id . '/interest-categories?offset=0&count=999';
 		$response = wp_remote_get( $url, $args );
 		if ( is_wp_error( $response ) ) {
-			echo json_encode( $groups_formatted );
+			echo wp_json_encode( $groups_formatted );
 			wp_die();
 		}
 		if ( !empty ( $response['body'] ) ) {
@@ -130,7 +130,7 @@ function mailchimp_get_groups_ajax() {
 
 
 	// Output response and exit
-	echo json_encode( $groups_formatted );
+	echo wp_json_encode( $groups_formatted );
 	wp_die();
 }
 add_action( 'wp_ajax_mailchimp_get_groups', 'mailchimp_get_groups_ajax' );
@@ -168,7 +168,7 @@ function mailchimp_ajax_get_lists() {
 	}
 
 	// Output response and exit
-	echo json_encode( $lists_formatted );
+	echo wp_json_encode( $lists_formatted );
 	exit;
 }
 
@@ -210,7 +210,7 @@ function mailchimp_add_user( $settings, $user_data, $list_id ) {
 			'timeout'     => 15,
 			'redirection' => 15,
 			'headers'     => "Authorization: apikey $api_key",
-			'body' => json_encode ( $body ),
+			'body' => wp_json_encode ( $body ),
 		);
 		
 		//get stuff after the dash as the delivery center, for URL
@@ -268,7 +268,7 @@ function mailchimp_is_user( $settings, $user_data, $list_id ) {
 function mailchimp_string( $def_str ) {
 
 	$strings = array(
-		'Form integration' => __( 'MailChimp Integration' ),
+		'Form integration' => 'MailChimp Integration',
 	);
 
 	return K::get_var( $def_str, $strings, $def_str );
@@ -344,7 +344,7 @@ function mailchimp_integration( $settings ) {
 						'class' => 'select2 mailchimp_group_select',
 						'style' => 'width: 27em;',
 						'multiple' => true,
-						'placeholder' => __( 'Select Interest Groups Here' ),
+						'placeholder' => 'Select Interest Groups Here',
 					),
 					array(
 						'format' => '<p id="mailchimp_group_wrapper"><label>MailChimp Interest Groups<br />:select</label></p>',

@@ -75,7 +75,7 @@ class EasyOptInsPostTypes {
 		
 		//ADD ACTIONS TO GET THE ENTIRE PAGE OUTPUT IN BUFFER
 	
-		if ( wp_get_theme() == 'Customizr' ) {
+		if ( get_stylesheet() == 'customizr' ) {
 			add_filter( 'the_content', array( $this, 'scan_for_shortcodes' ) );
 		} else {
 			add_action('wp_head', array( $this, 'fca_eoi_buffer_start' ));
@@ -117,11 +117,7 @@ class EasyOptInsPostTypes {
 			case 'mailchimp-wp':
 				$support_url = 'https://wordpress.org/support/plugin/mailchimp-wp';
 				break;
-				
-			case 'mad-mimi-wp':
-				$support_url = 'https://wordpress.org/support/plugin/mad-mimi-wp';
-				break;
-				
+								
 			case 'getresponse-wp':
 				$support_url = 'https://wordpress.org/support/plugin/getresponse';
 				break;
@@ -129,8 +125,8 @@ class EasyOptInsPostTypes {
 		}
 
 		$new_links = array(
-			'addnew' => "<a href='$url' >" . __('Add New Optin Form', 'easy-opt-ins' ) . '</a>',
-			'support' => "<a target='_blank' href='$support_url' >" . __('Support', 'easy-opt-ins' ) . '</a>'
+			'addnew' => "<a href='$url' >Add New Optin Form</a>",
+			'support' => "<a target='_blank' href='$support_url' >Support</a>"
 		);
 		
 		$links = array_merge( $new_links, $links );
@@ -145,19 +141,19 @@ class EasyOptInsPostTypes {
 	public function register_custom_post_type() {
 
 		$labels = array(
-			'name' => __('Optin Forms') ,
-			'singular_name' => __('Optin Form') ,
-			'add_new' => __('Add New') ,
-			'add_new_item' => __('Add New Optin Form') ,
-			'edit_item' => __('Edit Optin Form') ,
-			'new_item' => __('New Optin Form') ,
-			'all_items' => __('All Optin Forms') ,
-			'view_item' => __('View Optin Form') ,
-			'search_items' => __('Search Optin Form') ,
-			'not_found' => __('No Optin Form Found') ,
-			'not_found_in_trash' => __('No Optin Form Found in Trash') ,
+			'name' => 'Optin Forms',
+			'singular_name' => 'Optin Form',
+			'add_new' => 'Add New',
+			'add_new_item' => 'Add New Optin Form',
+			'edit_item' => 'Edit Optin Form',
+			'new_item' => 'New Optin Form',
+			'all_items' => 'All Optin Forms',
+			'view_item' => 'View Optin Form',
+			'search_items' => 'Search Optin Form',
+			'not_found' => 'No Optin Form Found',
+			'not_found_in_trash' => 'No Optin Form Found in Trash',
 			'parent_item_colon' => '',
-			'menu_name' => __('Optin Forms')
+			'menu_name' => 'Optin Forms'
 		);
 		$args = array(
 			'menu_icon' => FCA_EOI_PLUGIN_URL . '/icon.png',
@@ -226,30 +222,32 @@ class EasyOptInsPostTypes {
 			$value = $stats[ $column_name ][ $form_id ];
 		}
 
-		echo $activity->format_column_text( $column_name, $value );
+		echo wp_kses( $activity->format_column_text( $column_name, $value ), K::allowed_html() );
 	}
 
 	public function post_row_actions( $actions, $post ) {
 		if ( $post->post_type == 'easy-opt-ins' ) {
 			$action = 'fca_eoi_reset_stats';
-			$title  = __( 'Reset stats for this item' );
-			$label  = __( 'Reset Stats' );
+			$title  = 'Reset stats for this item';
+			$label  = 'Reset Stats';
 
 			$url = add_query_arg( 'action', $action, admin_url( 'admin-post.php?post=' . $post->ID ) );
 			$url = wp_nonce_url( $url );
 
 			$actions[$action] = $this->confirm_tag(
-				'<a href="' . $url . '" title="' . $title . '">' . $label . '</a>',
-				__( 'Are you sure?' ),
-				__( 'Do you really want to reset this Optin Form\'s stats? This action cannot be undone.' )
+				'<a href="' . esc_url( $url ) . '" title="' . esc_attr( $title ) . '">' . esc_attr( $label ) . '</a>',
+				'Are you sure?',
+				'Do you really want to reset this Optin Form\'s stats? This action cannot be undone.'
 			);
 		}
 		return $actions;
 	}
 
 	public function reset_stats() {
-		if ( wp_verify_nonce( $_REQUEST['_wpnonce'] ) ) {
-			EasyOptInsActivity::get_instance()->reset_stats( (int) $_REQUEST['post'] );
+		$nonce = empty( $_REQUEST['_wpnonce'] ) ? '' : sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) );
+		$post = empty( $_REQUEST['post'] ) ? false : intval( $_REQUEST['post'] );
+		if ( wp_verify_nonce( $nonce ) ) {
+			EasyOptInsActivity::get_instance()->reset_stats( $post );
 			wp_redirect( wp_get_referer() );
 		}
 	}
@@ -292,7 +290,7 @@ class EasyOptInsPostTypes {
 
 		$date_labels = array();
 		foreach ( array_keys( $stats['impressions'] ) as $date ) {
-			$date_labels[] = date( "j M", strtotime( $date ) );
+			$date_labels[] = gmdate( "j M", strtotime( $date ) );
 		}
 
 		$colors = array(
@@ -305,7 +303,7 @@ class EasyOptInsPostTypes {
 			<div class="fca_eoi_activity_chart_legend">
 				<?php foreach ( array( 'impressions', 'conversions' ) as $activity_type ): ?>
 					<div class="fca_eoi_activity_chart_legend_item">
-						<div class="fca_eoi_activity_chart_legend_sample" style="background-color: <?php echo $colors[ $activity_type ] ?>;"></div>
+						<div class="fca_eoi_activity_chart_legend_sample" style="background-color: <?php echo esc_attr( $colors[ $activity_type ] ) ?>;"></div>
 						<div class="fca_eoi_activity_chart_legend_text">
 							<?php echo esc_html( $activity->get_text( $activity_type, 'total' ) ) ?>
 						</div>
@@ -315,7 +313,7 @@ class EasyOptInsPostTypes {
 			<div class="fca_eoi_activity_chart_period">
 				<?php echo esc_html( $activity->get_text( 'period', null, array( $day_interval ) ) ) ?>
 				-
-				<a href="<?php echo admin_url( 'edit.php?post_type=easy-opt-ins' ) ?>"><?php echo __( 'View All Data' ) ?></a>
+				<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=easy-opt-ins' ) ) ?>">View All Data</a>
 			</div>
 		</div>
 		<div class="fca_eoi_activity_chart" id="fca_eoi_activity_chart"></div>
@@ -323,7 +321,7 @@ class EasyOptInsPostTypes {
 			<?php foreach ( array( 'impressions', 'conversions', 'conversion_rate' ) as $activity_type ): ?>
 				<div class="fca_eoi_activity_chart_stat_item">
 					<div class="fca_eoi_activity_chart_stat_value">
-						<?php echo $activity->format_column_text( $activity_type, $stats['totals'][ $activity_type ] ) ?>
+						<?php echo esc_html( $activity->format_column_text( $activity_type, $stats['totals'][ $activity_type ] ) ) ?>
 					</div>
 					<div class="fca_eoi_activity_chart_stat_title">
 						<?php echo esc_html( $activity->get_text( $activity_type, 'total' ) ) ?>
@@ -333,9 +331,9 @@ class EasyOptInsPostTypes {
 		</div>
 		<script>
 			jQuery( function() {
-				var impressions = <?php echo json_encode( array_values( $stats['impressions'] ) ) ?>;
-				var conversions = <?php echo json_encode( array_values( $stats['conversions'] ) ) ?>;
-				var dates = <?php echo json_encode( $date_labels ) ?>;
+				var impressions = <?php echo wp_json_encode( array_values( $stats['impressions'] ) ) ?>;
+				var conversions = <?php echo wp_json_encode( array_values( $stats['conversions'] ) ) ?>;
+				var dates = <?php echo wp_json_encode( $date_labels ) ?>;
 
 				var chart = nv.models.lineChart().options({
 					duration: 0,
@@ -355,8 +353,8 @@ class EasyOptInsPostTypes {
 				};
 
 				d3.select( '#fca_eoi_activity_chart' ).append( 'svg' ).datum( [
-					{ color: '<?php echo $colors['impressions'] ?>', key: 'Impressions', values: impressions.map(valuesToPoint) },
-					{ color: '<?php echo $colors['conversions'] ?>', key: 'Conversions', values: conversions.map(valuesToPoint) }
+					{ color: '<?php echo esc_attr( $colors['impressions'] ) ?>', key: 'Impressions', values: impressions.map(valuesToPoint) },
+					{ color: '<?php echo esc_attr( $colors['conversions'] ) ?>', key: 'Conversions', values: conversions.map(valuesToPoint) }
 				] ).call( chart );
 
 				nv.utils.windowResize( chart.update );
@@ -369,7 +367,7 @@ class EasyOptInsPostTypes {
 
 		add_meta_box(
 			'fca_eoi_meta_box_setup',
-			__( 'Setup' ),
+			'Setup',
 			array( &$this, 'meta_box_content_setup' ),
 			'easy-opt-ins',
 			'side',
@@ -377,7 +375,7 @@ class EasyOptInsPostTypes {
 		);
 		add_meta_box(
 			'fca_eoi_meta_box_build',
-			__( 'Form Builder' ),
+			'Form Builder',
 			array( &$this, 'meta_box_content_build' ),
 			'easy-opt-ins',
 			'side',
@@ -386,7 +384,7 @@ class EasyOptInsPostTypes {
 		
 		add_meta_box(
 			'fca_eoi_meta_box_provider',
-			__( 'Email Marketing Provider Integration' ),
+			'Email Marketing Provider Integration',
 			array( &$this, 'meta_box_content_provider' ),
 			'easy-opt-ins',
 			'side',
@@ -394,7 +392,7 @@ class EasyOptInsPostTypes {
 		);
 		add_meta_box(
 		'fca_eoi_meta_box_publish',
-			__( 'Publication' ),
+			'Publication',
 			array( &$this, 'meta_box_content_publish' ),
 			'easy-opt-ins',
 			'side',
@@ -402,7 +400,7 @@ class EasyOptInsPostTypes {
 		);
 		add_meta_box(
 			'fca_eoi_meta_box_thanks',
-			__( 'Messages' ),
+			'Messages',
 			array( &$this, 'meta_box_content_messages' ),
 			'easy-opt-ins',
 			'side',
@@ -411,7 +409,7 @@ class EasyOptInsPostTypes {
 		if ( has_action( 'fca_eoi_powerups' ) ) {
 			add_meta_box(
 				'fca_eoi_meta_box_powerups',
-				__( 'Power Ups' ),
+				'Power Ups',
 				array( &$this, 'meta_box_content_powerups' ),
 				'easy-opt-ins',
 				'side',
@@ -433,10 +431,10 @@ class EasyOptInsPostTypes {
 		// Layout tabs
 		echo '<ul class="category-tabs" id="layouts_types_tabs">';
 			foreach ( $layouts_types as $key => $value ) {
-				echo "<li data-target='$key' >$value</li>";
+				echo "<li data-target='" . esc_attr($key) . "' >" . esc_html($value) . "</li>";
 			}
 			
-			echo '<button type="button" class="button button-primary" id="fca_eoi_layout_revert_button" style="display: none">' . __('Back', 'easy-opt-in') . '</button>';
+			echo '<button type="button" class="button button-primary" id="fca_eoi_layout_revert_button" style="display: none">Back</button>';
 		
 		echo '</ul>';
 				
@@ -460,13 +458,7 @@ class EasyOptInsPostTypes {
 			$screenshot_src =	$layout_helper->screenshot_src();
 			
 			if ( $layout_helper->layout_enabled() ) {
-				echo "<div style='display:none;' class='fca_eoi_layout has-tip fca_eoi_layout_preview' data-layout-id='$layout_id' data-layout-order='$layout_order' data-layout-type='$layout_type'>";
-					echo "<img src='$screenshot_src'>";
-					echo "<div class='fca_eoi_layout_info'>";
-						echo "<h3>$layout_name</h3>";
-						echo '<button type="button" class="button button-primary button-large fca-layout-button">Select Layout</button>';
-					echo "</div>";
-				echo "</div>";
+				echo wp_kses( "<div style='display:none;' class='fca_eoi_layout has-tip fca_eoi_layout_preview' data-layout-id='$layout_id' data-layout-order='$layout_order' data-layout-type='$layout_type'><img src='$screenshot_src'><div class='fca_eoi_layout_info'><h3>$layout_name</h3><button type='button' class='button button-primary button-large fca-layout-button'>Select Layout</button></div></div>", K::allowed_html() );
 			} else {					
 				switch ( FCA_EOI_PLUGIN_SLUG ) {
 					case 'aweber-wp':
@@ -490,15 +482,7 @@ class EasyOptInsPostTypes {
 
 				}
 				
-				echo "<div class='fca_eoi_layout has-tip fca_eoi_layout_preview layout-disabled' data-layout-id='$layout_id' data-layout-order='$layout_order' data-layout-type='$layout_type'>";
-					echo "<div class='fca_eoi_layout_image_overlay'>";
-						echo "<img src='$screenshot_src'>";
-					echo "</div>";		
-					echo "<div class='fca_eoi_layout_info'>";
-						echo '<h3>' . $layout_name . ' ' . __( '(Premium Only)', 'easy-opt-in' ) . '</h3>';
-						echo "<a target='_blank' href='$upgrade_link' class='button button-primary button-large fca-layout-button upgrade-link'>Upgrade Now</a>";
-					echo "</div>";
-				echo "</div>";		
+				echo wp_kses( "<div class='fca_eoi_layout has-tip fca_eoi_layout_preview layout-disabled' data-layout-id='$layout_id' data-layout-order='$layout_order' data-layout-type='$layout_type'><div class='fca_eoi_layout_image_overlay'><img src='$screenshot_src'></div><div class='fca_eoi_layout_info'><h3>$layout_name (Premium Only)</h3><a target='_blank' href='$upgrade_link' class='button button-primary button-large fca-layout-button upgrade-link'>Upgrade Now</a></div></div>", K::allowed_html() );		
 			}
 		}
 		
@@ -563,8 +547,8 @@ class EasyOptInsPostTypes {
 		switch ( $this->settings['distribution'] ) {
 			case 'free':
 				$conditions_options = array(
-					'' => __( 'Choose a rule...' ),
-					'time_on_page' => __( 'Time on page' ),
+					'' => 'Choose a rule...',
+					'time_on_page' => 'Time on page',
 				);
 				ob_start();
 				?>
@@ -615,13 +599,13 @@ class EasyOptInsPostTypes {
 			case 'premium':
 			
 				$conditions_options = array(
-					'' => __( 'Choose a rule...' ),
-					'scrolled_percent' => __( 'Scrolled down' ),
-					'pageviews' => __( 'Number of Pageviews' ),
-					'time_on_page' => __( 'Time on page' ),
-					'include' => __( 'Only display on these pages' ),
-					'exclude' => __( 'Never display on these pages' ),
-					'exit_intervention' => __( 'Exit Intervention' ),
+					'' => 'Choose a rule...',
+					'scrolled_percent' => 'Scrolled down',
+					'pageviews' => 'Number of Pageviews',
+					'time_on_page' => 'Time on page',
+					'include' => 'Only display on these pages',
+					'exclude' => 'Never display on these pages',
+					'exit_intervention' => 'Exit Intervention',
 				);
 				
 				$rowNew = "<tr><th>" . 
@@ -712,7 +696,7 @@ class EasyOptInsPostTypes {
 					
 		K::wrap(
 			sprintf(
-				__( 'You can publish this optin box by going to <a href="%s" target="_blank">Appearance › Widgets</a>'),
+				'You can publish this optin box by going to <a href="%s" target="_blank">Appearance › Widgets</a>',
 				admin_url( 'widgets.php')
 			),
 			array( 'id' => 'fca_eoi_publish_widget' ),
@@ -721,11 +705,11 @@ class EasyOptInsPostTypes {
 
 		// Post boxes
 		echo '<div id ="fca_eoi_publish_postbox">';
-			K::wrap( __( 'Shortcode'),
+			K::wrap( 'Shortcode',
 				array( 'style' => 'padding-left: 0px; padding-right: 0px; ' ),
 				array( 'in' => 'h3' )
 			);
-			K::wrap( __( "Copy and paste beneath shortcode anywhere on your site where you'd like this opt-in form to appear." ),
+			K::wrap( "Copy and paste beneath shortcode anywhere on your site where you'd like this opt-in form to appear.",
 				null,
 				array( 'in' => 'p' )
 			);
@@ -737,11 +721,11 @@ class EasyOptInsPostTypes {
 				),
 				array( 'format' => '<p>:input</p>', )
 			);
-			K::wrap( __( 'Append to post or page'),
+			K::wrap( 'Append to post or page',
 				array( 'style' => 'padding-left: 0px; padding-right: 0px; ' ),
 				array( 'in' => 'h3' )
 			);
-			K::wrap( __( 'Automatically append this optin to the following posts, categories and/or pages.' ),
+			K::wrap( 'Automatically append this optin to the following posts, categories and/or pages.',
 				null,
 				array( 'in' => 'p' )
 			);
@@ -787,17 +771,17 @@ class EasyOptInsPostTypes {
 				echo "<h3>Rules</h3>";
 				
 				echo "<table class='fca_eoi_display_rules_table'>";
-					echo "<tr><th>Display Frequency" . fca_eoi_tooltip ( __('Set the minimum time between visits your optin will display to each user', 'easy-opt-ins') )  . "</th><td>";
+					echo "<tr><th>Display Frequency" . wp_kses( fca_eoi_tooltip ( 'Set the minimum time between visits your optin will display to each user' ), K::allowed_html() )  . "</th><td>";
 						K::select(
 							'fca_eoi[publish_lightbox][show_every]',
 							array(),
 							array(
 								'options' => array(
-									'always' => __( 'On every pageview' ),
-									'session' => __( 'Once per visit' ),
-									'day' => __( 'Once per day' ),
-									'month' => __( 'Once per month' ),
-									'once' => __( 'Only once' ),
+									'always' => 'On every pageview',
+									'session' => 'Once per visit',
+									'day' => 'Once per day',
+									'month' => 'Once per month',
+									'once' => 'Only once',
 								),
 								'selected' => K::get_var( 'show_every', $fca_eoi[ 'publish_lightbox' ], 'month' ),
 							)
@@ -810,16 +794,16 @@ class EasyOptInsPostTypes {
 							array(),
 							array(
 								'options' => array(
-									'desktop' => __( 'Desktop Only' ),
-									'mobile' => __( 'Mobile Only' ),
-									'all' => __( 'Desktop & Mobile' ),
+									'desktop' => 'Desktop Only',
+									'mobile' => 'Mobile Only',
+									'all' => 'Desktop & Mobile',
 								),
 								'selected' => K::get_var( 'devices', $fca_eoi[ 'publish_lightbox' ], 'all' ),
 							)
 						);
 					echo "</td></tr>";
 					
-					echo "<tr><th>Success Cookie Duration" . fca_eoi_tooltip ( __('The number of days before the optin will display again once the user successfully opts in to your campaign.', 'easy-opt-ins') ) . "</th><td>";
+					echo "<tr><th>Success Cookie Duration" . wp_kses( fca_eoi_tooltip ( 'The number of days before the optin will display again once the user successfully opts in to your campaign.' ), K::allowed_html() ) . "</th><td>";
 						K::input( 'fca_eoi[publish_lightbox][success_duration]',
 							array(
 								'type' => 'number',
@@ -865,7 +849,7 @@ class EasyOptInsPostTypes {
 				echo "<h3>Two-Step</h3>";
 					K::input( 'fca_eoi[lightbox_cta_text]',
 						array(
-							'value' => K::get_var( 'lightbox_cta_text', $fca_eoi ) ? K::get_var( 'lightbox_cta_text', $fca_eoi ) : __( 'Free Download' ),
+							'value' => K::get_var( 'lightbox_cta_text', $fca_eoi ) ? K::get_var( 'lightbox_cta_text', $fca_eoi ) : 'Free Download',
 							'class' => 'regular-text',
 						),
 						array(
@@ -877,7 +861,7 @@ class EasyOptInsPostTypes {
 							'readonly' => 'readonly',
 							'value' => htmlspecialchars( sprintf( '<button data-optin-cat="%d">%s</button>',
 								$post->ID,
-								__( 'Free Download' ) ) ),
+								'Free Download' ) ),
 							'class' => 'regular-text autoselect',
 						),
 						array(
@@ -885,7 +869,7 @@ class EasyOptInsPostTypes {
 						)
 					);
 
-					K::wrap( __( 'Add this to your post or page using a Block in the Gutenberg editor.<br> Advanced users can paste above html anywhere on their site. You can learn more <a href="https://fatcatapps.com/knowledge-base/create-two-step-optin/" target="_blank">here</a>.' ),
+					K::wrap( 'Add this to your post or page using a Block in the Gutenberg editor.<br> Advanced users can paste above html anywhere on their site. You can learn more <a href="https://fatcatapps.com/knowledge-base/create-two-step-optin/" target="_blank">here</a>.',
 						array( 'class' => 'description' ),
 						array( 'in' => 'p' )
 					);
@@ -940,17 +924,12 @@ class EasyOptInsPostTypes {
 		
 		$selected_layout = empty( $layout ) ? 'lightbox_not_set' : $layout;
 		$class = empty( $layout ) ? 'fca-new-layout' : '';
-		echo "<input id='fca_eoi_layout_select' name='fca_eoi[layout]' value='$selected_layout' hidden readonly class='$class'>";
+		echo wp_kses( "<input id='fca_eoi_layout_select' name='fca_eoi[layout]' value='$selected_layout' hidden readonly class='$class'>", K::allowed_html() );
 		//OUTPUT SELECTED OR DEFAULT TEMPLATE
 		
 		echo "<div id='fca_eoi_form_preview'>";
 		
-		$output = '<div id="fca_eoi_preview">';
-		//JS WILL LOAD THE TEMPLATE
-		//$output .= fca_eoi_get_layout_html( $selected_layout );
-
-		$output .= '</div>';
-		echo $output;
+		echo '<div id="fca_eoi_preview"></div>';
 		/* END FORM HTML GENERATION */
 		
 		$providers_available = array_keys( $this->settings[ 'providers' ] );
@@ -970,7 +949,7 @@ class EasyOptInsPostTypes {
 		
 		//HIDDEN IMAGE INPUT
 		$image_input = K::get_var( 'image_input', $post_meta, false );
-		echo "<input type='hidden' id='image_input' name='fca_eoi[image_input]' value=$image_input ></input>";	
+		echo wp_kses( "<input type='hidden' id='image_input' name='fca_eoi[image_input]' value=$image_input ></input>", K::allowed_html() );	
 		
 		$this->meta_box_field( 'fca_eoi_fieldset_form', 'Form', array(
 
@@ -1317,16 +1296,16 @@ class EasyOptInsPostTypes {
 		$last_form_meta = get_option( 'fca_eoi_last_form_meta', '' );
 		$thank_you_page_suggestion = empty ($last_form_meta['thank_you_page']) ? '~' : $last_form_meta['thank_you_page'];
 		$thank_you_mode_suggestion = empty ($last_form_meta['thankyou_page_mode']) ? 'ajax' : $last_form_meta['thankyou_page_mode'];
-		$thank_you_text_suggestion = empty ($last_form_meta['thankyou_ajax']) ?  __('Thank you! Please check your inbox for your confirmation email.', 'easy-opt-ins') : stripslashes( $last_form_meta['thankyou_ajax'] );
+		$thank_you_text_suggestion = empty ($last_form_meta['thankyou_ajax']) ?  'Thank you! Please check your inbox for your confirmation email.' : stripslashes( $last_form_meta['thankyou_ajax'] );
 		$thank_you_text_color = empty ($last_form_meta['thank_you_text_color']) ? '#fff' : $last_form_meta['thank_you_text_color'];
 		$thank_you_bg_color = empty ($last_form_meta['thank_you_bg_color']) ? '#00b894' : $last_form_meta['thank_you_bg_color'] ;
-		$subscribing_suggestion = empty ($last_form_meta['subscribing_message']) ? __('Subscribing...', 'easy-opt-ins') : stripslashes( $last_form_meta['subscribing_message'] );
-		$text_error_suggestion = empty ($last_form_meta['error_text_field_required']) ? __('Please fill out this field to continue', 'easy-opt-ins') : stripslashes( $last_form_meta['error_text_field_required'] );
-		$email_error_suggestion = empty ($last_form_meta['error_text_invalid_email']) ? __('Please enter a valid email address. For example "example@example.com".', 'easy-opt-ins') : stripslashes( $last_form_meta['error_text_invalid_email'] );
+		$subscribing_suggestion = empty ($last_form_meta['subscribing_message']) ? 'Subscribing...' : stripslashes( $last_form_meta['subscribing_message'] );
+		$text_error_suggestion = empty ($last_form_meta['error_text_field_required']) ? 'Please fill out this field to continue' : stripslashes( $last_form_meta['error_text_field_required'] );
+		$email_error_suggestion = empty ($last_form_meta['error_text_invalid_email']) ? 'Please enter a valid email address. For example "example@example.com".' : stripslashes( $last_form_meta['error_text_invalid_email'] );
 		$email_error_text_color = empty ($last_form_meta['email_error_text_color']) ? '#fff' : $last_form_meta['email_error_text_color'];
 		$email_error_bg_color = empty ($last_form_meta['email_error_bg_color']) ? '#d63031' : $last_form_meta['email_error_bg_color'] ;
 
-		echo '<h3>' . __('Subscribing Message', 'easy-opt-ins') . fca_eoi_tooltip ( __('This message will be displayed after your visitors submit your form.', 'easy-opt-ins') ) . '</h3>';
+		echo '<h3>' . 'Subscribing Message' . wp_kses( fca_eoi_tooltip ( 'This message will be displayed after your visitors submit your form.' ), K::allowed_html() ) . '</h3>';
 		echo '<table class="fca_eoi_text_messages_table">';
 		echo '<tr><th>Message</th><td>';
 			K::input( 'fca_eoi[subscribing_message]',
@@ -1339,10 +1318,10 @@ class EasyOptInsPostTypes {
 
 		echo '</td></tr></table>';
 		
-		echo '<h3>' . __('Thank You Message', 'easy-opt-ins') . fca_eoi_tooltip( __('This message will be displayed after someone has successfully subscribed.', 'easy-opt-ins') ) . '</h3>';
+		echo '<h3>' . 'Thank You Message' . wp_kses( fca_eoi_tooltip( 'This message will be displayed after someone has successfully subscribed.' ), K::allowed_html() ) . '</h3>';
 		echo '<table class="fca_eoi_text_messages_table">';
 		echo '<tr><th>Behavior</th><td>';
-			_e('Display immediately', 'easy-opt-ins');
+			echo 'Display immediately';
 			$checked = K::get_var( 'thankyou_page_mode', $fca_eoi, $thank_you_mode_suggestion );
 			
 			K::input( 'fca_eoi[thankyou_page_mode]',
@@ -1356,7 +1335,7 @@ class EasyOptInsPostTypes {
 					'format' => '<label class="switch" id="fca-eoi-redirect-mode-toggle-label" >:input<span class="switch-label" data-on="" data-off=""></span><span class="switch-handle"></span></label>'
 				)
 			);
-			_e('Redirect', 'easy-opt-ins');	
+			echo 'Redirect';	
 
 		echo '</td></tr>';
 		
@@ -1401,9 +1380,8 @@ class EasyOptInsPostTypes {
 					),
 					array(
 						'options' => array(
-							'page' => __( 'Page' ),
-							'url' => __( 'URL' ),
-							
+							'page' => 'Page',
+							'url' => 'URL',							
 						),
 						'selected' => K::get_var( 'redirect_page_mode', $fca_eoi, 'page' ),
 					)
@@ -1413,7 +1391,7 @@ class EasyOptInsPostTypes {
 			echo '</th><td>';
 			
 			echo '<span id="fca_eoi_redirect_page_span">';
-			$pages = array( '~' => __( 'Front page' ) );
+			$pages = array( '~' => 'Front page' );
 			$pages_objects = get_pages();
 			foreach ( $pages_objects as $page_obj ) {
 				$pages[ $page_obj->ID ] = $page_obj->post_title;
@@ -1446,7 +1424,7 @@ class EasyOptInsPostTypes {
 		
 		echo '</table>';
 		
-		echo '<h3>' . __('Error Messages', 'easy-opt-ins') . fca_eoi_tooltip( __("These messages will be displayed if someone fills out the form incorrectly.", 'easy-opt-ins') ) . '</h3>';
+		echo '<h3>' . 'Error Messages' . wp_kses( fca_eoi_tooltip( "These messages will be displayed if someone fills out the form incorrectly." ), K::allowed_html() ) . '</h3>';
 		echo '<table class="fca_eoi_text_messages_table">';
 		echo '<tr><th>Field Required</th><td>';
 
@@ -1802,9 +1780,9 @@ class EasyOptInsPostTypes {
 			
 			wp_enqueue_style( 'wp-color-picker' );
 			wp_enqueue_script( 'wp-color-picker' );
-			wp_enqueue_script( 'select2', '//cdnjs.cloudflare.com/ajax/libs/select2/3.5.0/select2.js', array(), FCA_EOI_VER, true );
-			wp_enqueue_style( 'fca-eoi-font-awesome', '//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css', array(), FCA_EOI_VER );
-			wp_enqueue_style( 'select2', '//cdnjs.cloudflare.com/ajax/libs/select2/3.5.0/select2.min.css', array(), FCA_EOI_VER );
+			wp_enqueue_script( 'fca-eoi-select2', FCA_EOI_PLUGIN_URL . '/assets/vendor/select2/select2.min.js', array(), FCA_EOI_VER, true );
+			wp_enqueue_style( 'fca-eoi-font-awesome', FCA_EOI_PLUGIN_URL . '/assets/vendor/font-awesome/font-awesome.min.css', array(), FCA_EOI_VER );
+			wp_enqueue_style( 'fca-eoi-select2', FCA_EOI_PLUGIN_URL . '/assets/vendor/select2/select2.min.css', array(), FCA_EOI_VER );
 			wp_enqueue_script( 'accordion' );
 			
 			if ( !empty( $options['animation'] ) ) {
@@ -1819,7 +1797,7 @@ class EasyOptInsPostTypes {
 			wp_enqueue_style( 'fca-eoi-common-css', FCA_EOI_PLUGIN_URL .'/assets/style-new.min.css', array(), FCA_EOI_VER );
 			
 			//LOAD EDITOR JS
-			wp_enqueue_script( 'fca-eoi-editor', FCA_EOI_PLUGIN_URL . '/assets/admin/fca-eoi-editor.js', array('jquery', 'fca_eoi_tooltipster', 'wp-color-picker', 'select2', 'accordion' ), FCA_EOI_VER, true );
+			wp_enqueue_script( 'fca-eoi-editor', FCA_EOI_PLUGIN_URL . '/assets/admin/fca-eoi-editor.js', array('jquery', 'fca_eoi_tooltipster', 'wp-color-picker', 'fca-eoi-select2', 'accordion' ), FCA_EOI_VER, true );
 			wp_enqueue_script( 'fca-eoi-rules', FCA_EOI_PLUGIN_URL . '/assets/admin/fca-eoi-rules.min.js', array('jquery' ), FCA_EOI_VER, true );
 			
 			//LOAD PROVIDER JS AND CSS
@@ -1854,8 +1832,8 @@ class EasyOptInsPostTypes {
 			}
 		}
 		if( 'widgets' === $screen->id ){
-			wp_enqueue_script( 'select2', '//cdnjs.cloudflare.com/ajax/libs/select2/3.5.0/select2.js', array(), FCA_EOI_VER, true );
-			wp_enqueue_style( 'select2', '//cdnjs.cloudflare.com/ajax/libs/select2/3.5.0/select2.min.css', array(), FCA_EOI_VER );
+			wp_enqueue_script( 'fca-eoi-select2', FCA_EOI_PLUGIN_URL . '/assets/vendor/select2/select2.min.js', array(), FCA_EOI_VER, true );
+			wp_enqueue_style( 'fca-eoi-select2', FCA_EOI_PLUGIN_URL . '/assets/vendor/select2/select2.min.css', array(), FCA_EOI_VER );
 		}
 	}
 
@@ -1886,8 +1864,8 @@ class EasyOptInsPostTypes {
 				
 				echo '<div class="error fca_eoi_onboard_div">';
 				
-				echo '<img id="fca_eoi_onboard_text" src="' . FCA_EOI_PLUGIN_URL . '/assets/admin/onboarding-text.png' . '">';	
-				echo '<img id="fca_eoi_onboard_arrow" src="' . FCA_EOI_PLUGIN_URL . '/assets/admin/onboarding-arrow.png' . '">';
+				echo '<img id="fca_eoi_onboard_text" src="' . esc_url( FCA_EOI_PLUGIN_URL . '/assets/admin/onboarding-text.png' ) . '">';	
+				echo '<img id="fca_eoi_onboard_arrow" src="' . esc_url( FCA_EOI_PLUGIN_URL . '/assets/admin/onboarding-arrow.png' ) . '">';
 				echo '</div>';
 			}
 		}
@@ -1907,20 +1885,20 @@ class EasyOptInsPostTypes {
 			$conversions = array_sum ( $conversions );
 			
 			if ( $conversions >= 25 ) {
-				$review_link =  'https://wordpress.org/support/plugin/' . FCA_EOI_PLUGIN_SLUG . '/reviews/?rate=5#new-post';
+				$review_link = esc_url( 'https://wordpress.org/support/plugin/' . FCA_EOI_PLUGIN_SLUG . '/reviews/?rate=5#new-post' );
 
-				wp_enqueue_script( 'fca_eoi_dismiss_review_js', FCA_EOI_PLUGIN_URL . '/assets/admin/dismiss.min.js', array(), FCA_EOI_VER );
+				wp_enqueue_script( 'fca_eoi_dismiss_review_js', FCA_EOI_PLUGIN_URL . '/assets/admin/dismiss.min.js', array(), FCA_EOI_VER, true );
 				wp_localize_script( 'fca_eoi_dismiss_review_js', 'fcaEoiDismiss', array( 'ajax_url' => admin_url( 'admin-ajax.php' ),	'nonce' =>  wp_create_nonce( 'fca_eoi_dismiss' ) ) );
 				
 				echo '<div class="notice notice-success fca_eoi_review_div">';
-					echo '<img style="float:left" width="120" height="120" src="' . FCA_EOI_PLUGIN_URL . '/assets/admin/optincat.png' . '">';
-					echo '<p><strong>' . __( "Great work! You've gotten more than 25 email subscribers using Optin Cat.", 'easy-opt-ins' ) . '</strong></p>';
+					echo '<img style="float:left" width="120" height="120" src="' . esc_url( FCA_EOI_PLUGIN_URL . '/assets/admin/optincat.png' ) . '">';
+					echo "<p><strong>Great work! You've gotten more than 25 email subscribers using Optin Cat.</strong></p>";
 					
-					echo '<p>' . sprintf( __( "If you love Optin Cat, why not leave us a nice review on %sWordPress.org%s? Reviews keeps us motivated - we'd really appreciate it.", 'easy-opt-ins' ), "<a target='_blank' href='$review_link'>", '</a>') . '</p>';
+					echo '<p>' . sprintf( "If you love Optin Cat, why not leave us a nice review on %sWordPress.org%s? Reviews keeps us motivated - we'd really appreciate it.", "<a target='_blank' href='".esc_url($review_link)."'>", '</a>') . '</p>';
 					echo '<br>';
 					
-					echo "<a target='_blank' href='$review_link' class='button button-primary'>" . __( 'Leave a Review', 'easy-opt-ins') . "</a> ";
-					echo "<button type='button' class='button button-secondary' data-option='fca_eoi_dismiss_review' id='fca-eoi-dismiss-review-btn'>" . __( 'Dismiss', 'easy-opt-ins') . "</button>";
+					echo "<a target='_blank' href='".esc_url($review_link)."' class='button button-primary'>Leave a Review</a> ";
+					echo "<button type='button' class='button button-secondary' data-option='fca_eoi_dismiss_review' id='fca-eoi-dismiss-review-btn'>Dismiss</button>";
 					echo '<br style="clear:both">';
 				echo '</div>';
 				
@@ -2005,16 +1983,16 @@ class EasyOptInsPostTypes {
 
 		        $messages[$post_type] = array(
                 0 => '', // Unused. Messages start at index 1.
-                1 => __( 'Opt-In Form updated.' ),
-                2 => __( 'Opt-In Form updated.' ),
-                3 => __( 'Opt-In Form deleted.' ),
-                4 => __( 'Opt-In Form updated.' ),
-                5 => isset( $_GET['revision']) ? sprintf( __('%2$s restored to revision from %1$s' ), wp_post_revision_title( (int) $_GET['revision'], false ), esc_attr( $singular ) ) : false,
-                6 => __( 'Opt-In Form saved.' ),
-                7 => sprintf( __( '%s saved.' ), esc_attr( $singular ) ),
-                8 => sprintf( __( '%s submitted. <a href="%s" target="_blank">Preview %s</a>'), $singular, esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ), strtolower( $singular ) ),
-                9 => sprintf( __( '%s scheduled for: <strong>%s</strong>. <a href="%s" target="_blank">Preview %s</a>' ), $singular, date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ), esc_url( get_permalink( $post_ID ) ), strtolower( $singular ) ),
-                10 => sprintf( __( '%s draft updated. <a href="%s" target="_blank">Preview %s</a>'), $singular, esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ), strtolower( $singular ) )
+                1 => 'Opt-In Form updated.',
+                2 => 'Opt-In Form updated.',
+                3 => 'Opt-In Form deleted.',
+                4 => 'Opt-In Form updated.',
+                5 => isset( $_GET['revision'] ) ? sprintf( '%2$s restored to revision from %1$s', wp_post_revision_title( (int) $_GET['revision'], false ), esc_attr( $singular ) ) : false,
+                6 => 'Opt-In Form saved.',
+                7 => sprintf( '%s saved.', esc_attr( $singular ) ),
+                8 => sprintf( '%s submitted. <a href="%s" target="_blank">Preview %s</a>', $singular, esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ), strtolower( $singular ) ),
+                9 => sprintf( '%s scheduled for: <strong>%s</strong>. <a href="%s" target="_blank">Preview %s</a>', $singular, date_i18n( 'M j, Y @ G:i' ), strtotime( $post->post_date ), esc_url( get_permalink( $post_ID ) ), strtolower( $singular ) ),
+                10 => sprintf( '%s draft updated. <a href="%s" target="_blank">Preview %s</a>', $singular, esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ), strtolower( $singular ) )
 			);
 
 		}
@@ -2100,7 +2078,11 @@ class EasyOptInsPostTypes {
 		if ( K::get_var( 'consent_granted', $_POST ) === 'false' ) {
 			$status = 'denied';
 		} else {
-			$status = call_user_func( $provider . '_add_user', $this->settings, $_POST, $list_id );
+			if( $provider === 'Not set - Store Optins Locally' ) {
+				$status = TRUE;
+			} else {
+				$status = call_user_func( $provider . '_add_user', $this->settings, $_POST, $list_id );				
+			}
 		}
 		
 		do_action('fca_eoi_after_submission', $fca_eoi, $status );
@@ -2110,7 +2092,7 @@ class EasyOptInsPostTypes {
 			EasyOptInsActivity::get_instance()->add_conversion( $id );
 			
 		} else if ( !empty( $status ) ){
-			echo "✗ Failed to add user - $status";
+			echo wp_kses( "✗ Failed to add user - $status", K::allowed_html() );
 		} else {
 			echo '✓';
 			EasyOptInsActivity::get_instance()->add_conversion( $id );
@@ -2142,7 +2124,7 @@ class EasyOptInsPostTypes {
 		// Add error for missing thank you page
 		$confirmation_page_set = ( bool ) K::get_var( 'thank_you_page', $fca_eoi);
 		if( ! $confirmation_page_set ) {
-			$errors[] = __( 'No "Thank you" page selected. You will not be able to use this form.' );
+			$errors[] = 'No "Thank you" page selected. You will not be able to use this form.';
 		}
 
 		// Add error for missing list setting for the current provider
@@ -2162,13 +2144,13 @@ class EasyOptInsPostTypes {
 
 
 		if( !$list_set && $provider !== 'zapier' && $provider !== 'Not set - Store Optins Locally' ) {
-			$errors[] = __( 'No List selected. You will not be able to use this form.' );
+			$errors[] = 'No List selected. You will not be able to use this form.';
 		}
 
 		$errors = apply_filters( 'fca_eoi_alter_admin_notices', $errors );
 
 		foreach ( $errors as $error ) {
-			echo '<div class="error"><p>' . $error . '</p></div>';
+			echo wp_kses( '<div class="error"><p>' . $error . '</p></div>', K::allowed_html() );
 		}
 	}
 
@@ -2469,7 +2451,7 @@ class EasyOptInsPostTypes {
 			$id = $p['id'];
 			$target_data[$id] = empty( $p['conditions'] ) ? array() : $p['conditions'];
 
-			echo "<div id='fca_eoi_banner_$id' style='display:none;'>";
+			echo "<div id='fca_eoi_banner_".esc_attr($id)."' style='display:none;'>";
 				echo do_shortcode( "[easy-opt-in id=$id]" );
 			echo '</div>';
 		}
@@ -2516,7 +2498,7 @@ class EasyOptInsPostTypes {
 		
 		?>
 		<div style="display:none">
-			<div id="fca_eoi_lightbox_<?php echo $id ?>"><?php echo $content ?></div>
+			<div id="fca_eoi_lightbox_<?php echo esc_attr( $id ) ?>"><?php echo wp_kses( $content, K::allowed_html() ) ?></div>
 		</div>
 		<?php
 	}
