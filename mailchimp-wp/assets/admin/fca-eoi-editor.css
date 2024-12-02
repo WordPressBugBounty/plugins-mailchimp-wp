@@ -296,7 +296,13 @@ div[id^=fca_eoi_] .accordion-section-title:hover:after,
 div[id^=fca_eoi_] .accordion-section.open .accordion-section-title:after {
 	color: #555;
 }
+
+div[id^=fca_eoi_] .accordion-section-title:after {
+	font-family: 'dashicons';
+	content: '\f140';
+}
 div[id^=fca_eoi_] .accordion-section.open .accordion-section-title:after {
+	font-family: 'dashicons';
 	content: '\f142';
 }
 div[id^=fca_eoi_] .accordion-section-primary-full ~ .accordion-section-secondary-full {

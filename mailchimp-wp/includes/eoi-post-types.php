@@ -1394,7 +1394,7 @@ class EasyOptInsPostTypes {
 			$pages = array( '~' => 'Front page' );
 			$pages_objects = get_pages();
 			foreach ( $pages_objects as $page_obj ) {
-				$pages[ $page_obj->ID ] = $page_obj->post_title;
+				$pages[ $page_obj->ID ] = empty( $page_obj->post_title ) ? '(no title)' : $page_obj->post_title;
 			}
 			K::select( 'fca_eoi[thank_you_page]',
 				array( 

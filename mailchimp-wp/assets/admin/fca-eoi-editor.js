@@ -738,7 +738,7 @@ jQuery( document ).ready( function( $ ) {
 	}
 
 	//ACCORDION CLICK HANDLER
-	$( '.accordion-section' ).click(function() {
+	$( '.accordion-section-title' ).click(function() {
 		accordionSwitch( $( this ) )
 		var $parent = $(this).closest( '[id^="fca_eoi_fieldset_"]' )
 		var field_id = $parent.attr('id')

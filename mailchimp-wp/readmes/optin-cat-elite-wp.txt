@@ -4,13 +4,18 @@ Author URI: http://fatcatapps.com/
 Plugin URI: http://fatcatapps.com/
 Requires at least: 3.9.1
 Tested up to: 6.7
-Stable tag: 2.5.8
+Stable tag: 2.5.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Optin Cat Helps You Convert More Blog Visitors Into Subscribers. Create Popups, Widgets & Post Boxes In Less Than 2 Minutes.
 
 == Changelog ==
+
+= 2.5.9 - December 2, 2024 =
+* Fix editor accordion closing when clicking inside fields
+* Fix editor accordion icons
+* Fix/change untitled posts/pages to display (no title) instead of blank
 
 = 2.5.8 - November 28, 2024 =
 * Fix editor accordion not working

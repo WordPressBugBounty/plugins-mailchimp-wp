@@ -674,7 +674,7 @@ function k_selector( $name, $selected_options = array(), $return = false ) {
 				$options[ 'posts' ][ '#' . get_the_ID() ] = $post_type_name
 					. ' › '
 					. '#' . get_the_ID() . ' &ndash; '
-					. ( get_the_title() ? get_the_title() : '[Untitled]' )
+					. ( get_the_title() ? get_the_title() : '(no title)' )
 				;
 			}
 		}

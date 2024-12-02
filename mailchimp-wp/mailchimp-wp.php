@@ -4,7 +4,7 @@
 	Plugin URI: https://fatcatapps.com/optincat
 	Description: The Mailchimp Optin Cat WordPress Plugin Makes It Super Simple To Create Beautiful Mailchimp Sign-up Widgets & Forms In Minutes.
 	Author: Fatcat Apps
-	Version: 2.5.8
+	Version: 2.5.9
 	License: GPL v2
 	License URI: https://www.gnu.org/licenses/gpl-2.0.html
 	Author URI: https://fatcatapps.com/
@@ -19,7 +19,7 @@ define( 'FCA_EOI_PLUGIN_FILE', __FILE__ );
 define( 'FCA_EOI_PLUGIN_URL', plugins_url( '', __FILE__ ) );
 define( 'FCA_EOI_PLUGIN_SLUG', 'mailchimp-wp' );
 define( 'FCA_EOI_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
-define( 'FCA_EOI_VER', '2.5.8' );
+define( 'FCA_EOI_VER', '2.5.9' );
 
 if( ! defined ( 'FCA_EOI_DEBUG' ) ) {
 	define( 'FCA_EOI_DEBUG', false );

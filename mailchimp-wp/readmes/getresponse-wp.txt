@@ -4,7 +4,7 @@ Tags: getresponse, getresponse wordpress, getresponse form, getresponse block, g
 Donate link: https://fatcatapps.com/optincat/upgrade/?utm_campaign=descriptioncta&utm_source=httpswordpress.orgpluginsgetresponse&utm_medium=referral
 Requires at least: 3.9.1
 Tested up to: 6.7
-Stable tag: 2.5.8
+Stable tag: 2.5.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -111,6 +111,11 @@ Our full privacy policy is available here: [https://fatcatapps.com/legal/privacy
 7. The whole settings screen
 
 == Changelog ==
+
+= GetResponse Forms by Optin Cat 2.5.9 =
+* Fix editor accordion closing when clicking inside fields
+* Fix editor accordion icons
+* Fix/change untitled posts/pages to display (no title) instead of blank
 
 = GetResponse Forms by Optin Cat 2.5.8 =
 * Fix editor accordion not working
