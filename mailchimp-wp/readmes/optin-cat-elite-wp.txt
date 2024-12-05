@@ -12,6 +12,10 @@ Optin Cat Helps You Convert More Blog Visitors Into Subscribers. Create Popups, 
 
 == Changelog ==
 
+= 2.6.0 - December 5, 2024 =
+* Fix placeholder text not showing up
+* Fix redirection after optin
+
 = 2.5.9 - December 2, 2024 =
 * Fix editor accordion closing when clicking inside fields
 * Fix editor accordion icons

@@ -4,7 +4,7 @@ Tags: aweber, aweber wordpress, aweber form, aweber block, aweber widget
 Donate link: https://fatcatapps.com/optincat/upgrade/?utm_campaign=descriptioncta&utm_source=httpswordpress.orgpluginsaweber-wp&utm_medium=referral
 Requires at least: 3.9.1
 Tested up to: 6.7
-Stable tag: 2.5.9
+Stable tag: 2.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -117,11 +117,14 @@ Our full privacy policy is available here: [https://fatcatapps.com/legal/privacy
 
 == Changelog ==
 
+= Aweber Forms by Optin Cat 2.6.0 =
+* Fix placeholder text not showing up
+* Fix redirection after optin
+
 = Aweber Forms by Optin Cat 2.5.9 =
 * Fix editor accordion closing when clicking inside fields
 * Fix editor accordion icons
 * Fix/change untitled posts/pages to display (no title) instead of blank
-
 
 = Aweber Forms by Optin Cat 2.5.8 =
 * Fix editor accordion not working

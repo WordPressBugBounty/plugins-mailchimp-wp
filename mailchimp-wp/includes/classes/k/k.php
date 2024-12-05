@@ -76,6 +76,7 @@ class K {
 				'class' => true,
 				'value' => true,
 				'type' => true,
+				'placeholder' => true,
 				'checked' => true,
 				'hidden' => true,
 				'readonly' => true,
@@ -95,7 +96,9 @@ class K {
 				'name' => true,
 				'id' => true,
 				'class' => true,
-				'value' => true
+				'value' => true,
+				'style' => true,
+				'rows' => true
 			],
 			'table' => [
 				'id' => true,
@@ -120,7 +123,15 @@ class K {
 				'id' => true,
 				'class' => true,
 				'action' => true,
-				'method' => true
+				'method' => true,
+				'data-fca_eoi_list_id' => true,
+				'data-fca_eoi_thank_you_mode' => true,
+				'data-fca_eoi_thank_you_text_color' => true,
+				'data-fca_eoi_thank_you_bg_color' => true,
+				'data-fca_eoi_thank_you_page' => true,
+				'data-fca_eoi_success_cookie_duration' => true,
+				'data-fca_eoi_sub_msg' => true,				
+				'data-fca_eoi_push_page' => true,
 			],
 			'label' => [
 				'for' => true,
