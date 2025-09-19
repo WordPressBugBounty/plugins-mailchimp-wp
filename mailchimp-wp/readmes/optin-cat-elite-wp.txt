@@ -3,14 +3,17 @@ Contributors: fatcatapps, davidhme, ryannovotny
 Author URI: http://fatcatapps.com/
 Plugin URI: http://fatcatapps.com/
 Requires at least: 3.9.1
-Tested up to: 6.7
-Stable tag: 2.5.9
+Tested up to: 6.8
+Stable tag: 2.6.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Optin Cat Helps You Convert More Blog Visitors Into Subscribers. Create Popups, Widgets & Post Boxes In Less Than 2 Minutes.
 
 == Changelog ==
+
+= 2.6.1 - September 19, 2025 =
+* Fix potential XSS vector reported.
 
 = 2.6.0 - December 5, 2024 =
 * Fix placeholder text not showing up

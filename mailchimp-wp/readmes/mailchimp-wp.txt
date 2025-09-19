@@ -3,8 +3,8 @@ Contributors: Forms for Mailchimp by Optin Cat, davidhme, fatcatapps, ryannovotn
 Tags: mailchimp, mailchimp wordpress, mailchimp form, mailchimp block, mailchimp widget
 Donate link: https://fatcatapps.com/optincat?utm_campaign=descriptioncta&utm_source=httpswordpress.orgpluginsmailchimp-wp&utm_medium=referral
 Requires at least: 3.9.1
-Tested up to: 6.7
-Stable tag: 2.6.0
+Tested up to: 6.8
+Stable tag: 2.6.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -282,6 +282,9 @@ Our full privacy policy is available here: [https://fatcatapps.com/legal/privacy
 7. The entire settings screen
 
 == Changelog ==
+
+= 2.6.1 =
+* Fix potential XSS vector reported.
 
 = 2.6.0 =
 * Fix placeholder text not showing up

@@ -87,6 +87,6 @@ class EasyOptInsShortcodes {
 			
 		}
 		
-		return $head;
+		return wp_kses( $head, K::allowed_html() );
 	}
 }
