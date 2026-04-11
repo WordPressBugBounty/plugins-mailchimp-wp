@@ -23,34 +23,34 @@ class EasyOptInsUpgrade {
             $this->submenu_link = 'https://fatcatapps.com/optincat/upgrade/?utm_campaign=wp%2Bsubmenu&utm_source=Optin%2BCat%2BFree%2BAweber&utm_medium=plugin';
             $this->sidebar_link = 'https://fatcatapps.com/optincat/upgrade/?utm_campaign=sidebar%2Bad&utm_source=Optin%2BCat%2BFree%2BAweber&utm_medium=plugin';
             $this->editor_link  = 'https://fatcatapps.com/optincat/upgrade/?utm_campaign=editor%2Bad&utm_source=Optin%2BCat%2BFree%2BAweber&utm_medium=plugin';
-			$this->review_link  = 'https://wordpress.org/support/view/plugin-reviews/aweber-wp?rate=5#postform';
+			$this->review_link  = 'https://wordpress.org/support/view/plugin-reviews/aweber-wp#postform';
 			$this->support_link = 'https://wordpress.org/support/plugin/aweber-wp';
 			  
 		} elseif ( $this->has_provider( 'campaignmonitor' ) ) {
             $this->submenu_link = 'https://fatcatapps.com/optincat/upgrade/?utm_campaign=wp%2Bsubmenu&utm_source=Optin%2BCat%2BFree%2BCampaign%2BMonitor&utm_medium=plugin';
             $this->sidebar_link = 'https://fatcatapps.com/optincat/upgrade/?utm_campaign=sidebar%2Bad&utm_source=Optin%2BCat%2BFree%2BCampaign%2BMonitor&utm_medium=plugin';
             $this->editor_link  = 'https://fatcatapps.com/optincat/upgrade/?utm_campaign=editor%2Bad&utm_source=Optin%2BCat%2BFree%2BCampaign%2BMonitor&utm_medium=plugin';
-        	$this->review_link  = 'https://wordpress.org/support/view/plugin-reviews/campaign-monitor-wp?rate=5#postform';
+        	$this->review_link  = 'https://wordpress.org/support/view/plugin-reviews/campaign-monitor-wp#postform';
 			$this->support_link = 'https://wordpress.org/support/plugin/campaign-monitor-wp';
 		
 		} elseif ( $this->has_provider( 'getresponse' ) ) {
             $this->submenu_link = 'https://fatcatapps.com/optincat/upgrade/?utm_campaign=wp%2Bsubmenu&utm_source=Optin%2BCat%2BFree%2BGetResponse&utm_medium=plugin';
             $this->sidebar_link = 'https://fatcatapps.com/optincat/upgrade/?utm_campaign=sidebar%2Bad&utm_source=Optin%2BCat%2BFree%2BGetResponse&utm_medium=plugin';
             $this->editor_link  = 'https://fatcatapps.com/optincat/upgrade/?utm_campaign=editor%2Bad&utm_source=Optin%2BCat%2BFree%2BGetResponse&utm_medium=plugin';
-          	$this->review_link  = 'https://wordpress.org/support/view/plugin-reviews/getresponse?rate=5#postform';
+          	$this->review_link  = 'https://wordpress.org/support/view/plugin-reviews/getresponse#postform';
 			$this->support_link = 'https://wordpress.org/support/plugin/getresponse';
 			
 		} elseif ( $this->has_provider( 'mailchimp' ) ) {
             $this->submenu_link = 'https://fatcatapps.com/optincat/upgrade/?utm_campaign=wp%2Bsubmenu&utm_source=Optin%2BCat%2BFree%2BMailChimp&utm_medium=plugin';
             $this->sidebar_link = 'https://fatcatapps.com/optincat/upgrade/?utm_campaign=sidebar%2Bad&utm_source=Optin%2BCat%2BFree%2BMailChimp&utm_medium=plugin';
             $this->editor_link  = 'https://fatcatapps.com/optincat/upgrade/?utm_campaign=editor%2Bad&utm_source=Optin%2BCat%2BFree%2BMailChimp&utm_medium=plugin';
-           	$this->review_link  = 'https://wordpress.org/support/view/plugin-reviews/mailchimp-wp?rate=5#postform';
+           	$this->review_link  = 'https://wordpress.org/support/view/plugin-reviews/mailchimp-wp#postform';
 			$this->support_link = 'https://wordpress.org/support/plugin/mailchimp-wp';       
 		} else {
             $this->submenu_link = 'https://fatcatapps.com/optincat/upgrade/?utm_campaign=wp%2Bsubmenu&utm_source=Optin%2BCat%2BFree&utm_medium=plugin';
             $this->sidebar_link = 'https://fatcatapps.com/optincat/upgrade/?utm_campaign=sidebar%2Bad&utm_source=Optin%2BCat%2BFree&utm_medium=plugin';
             $this->editor_link  = 'https://fatcatapps.com/optincat/upgrade/?utm_campaign=editor%2Bad&utm_source=Optin%2BCat%2BFree&utm_medium=plugin';
-            $this->review_link  = 'https://wordpress.org/support/view/plugin-reviews/mailchimp-wp?rate=5#postform';
+            $this->review_link  = 'https://wordpress.org/support/view/plugin-reviews/mailchimp-wp#postform';
 			$this->support_link = 'https://wordpress.org/support/plugin/mailchimp-wp';       
 		}
 

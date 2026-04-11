@@ -40,7 +40,7 @@ class K {
 				'src' => true,
 				'id' => true,
 				'class' => true,
-			],
+			],			
 			'h1' => [
 				'id' => true,
 				'class' => true,
@@ -57,6 +57,8 @@ class K {
 				'type' => true,
 				'title' => true,
 				'data-wysihtml5-command' => true,
+				'data-wysihtml5-dialog-action' => true,
+				'data-wysihtml5-action' => true,
 				'class' => true,
 				'id' => true,
 				'name' => true,
@@ -84,6 +86,7 @@ class K {
 				'min' => true,
 				'max' => true,
 				'style' => true,
+				'data-wysihtml5-dialog-field' => true,
 			],
 			'select' => [
 				'name' => true,
@@ -145,9 +148,11 @@ class K {
 			'div' => [
 				'id' => true,
 				'class' => true,
+				'style' => true,
 				'data-layout-id' => true,
 				'data-layout-type' => true,
 				'data-layout-order' => true,
+				'data-wysihtml5-dialog' => true,
 			],
 			'span' => [
 				'id' => true,
@@ -308,8 +313,8 @@ class K {
 				
 				$html .= '<div class="fca-wysiwyg-url-dialog" data-wysihtml5-dialog="createLink" style="display: none">';
 					$html .= '<input data-wysihtml5-dialog-field="href" value="http://">';
-					$html .= '<a class="button button-secondary" data-wysihtml5-dialog-action="cancel">Cancel</a>';
-					$html .= '<a class="button button-primary" data-wysihtml5-dialog-action="save">OK</a>';
+					$html .= '<button type="button" class="button button-secondary button-small" data-wysihtml5-dialog-action="cancel">Cancel</button>';
+					$html .= '<button type="button" class="button button-primary button-small" data-wysihtml5-dialog-action="save">OK</button>';
 				$html .= "</div>";
 
 				$html .= '<button class="fca-wysiwyg-view-html action" type="button" data-wysihtml5-action="change_view">HTML</button>';

@@ -159,8 +159,8 @@ function fca_eoi_wysi_callback( $args ) {
 		
 		$html .= '<div class="fca-wysiwyg-url-dialog" data-wysihtml5-dialog="createLink" style="display: none">';
 			$html .= '<input data-wysihtml5-dialog-field="href" value="http://">';
-			$html .= '<a class="button button-secondary" data-wysihtml5-dialog-action="cancel">Cancel</a>';
-			$html .= '<a class="button button-primary" data-wysihtml5-dialog-action="save">OK</a>';
+			$html .= '<button type="button" class="button button-secondary button-small" data-wysihtml5-dialog-action="cancel">Cancel</button>';
+			$html .= '<button type="button" class="button button-primary button-small" data-wysihtml5-dialog-action="save">OK</button>';
 		$html .= "</div>";
 		$html .= '<button class="fca-wysiwyg-view-html action" type="button" data-wysihtml5-action="change_view">HTML</button>';
 

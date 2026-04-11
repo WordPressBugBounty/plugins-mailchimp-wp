@@ -87,7 +87,7 @@ legend {
 .onoffswitch-inner:before {
     content: attr(data-content-on);
     padding-left: 10px;
-    background-color: #39b0ff;
+    background-color: var(--wp-admin-theme-color);
 	color: #FFFFFF;
 }
 .onoffswitch-inner:after {
